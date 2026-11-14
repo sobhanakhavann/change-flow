@@ -1,50 +1,87 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+گزارش اثر همگام‌سازی (Sync Impact Report)
+تغییر نسخه: قالب بدون نسخه → 1.0.0 (تصویب اولیه)
+اصول: جایگزینی پنج جای‌نگهدار قالب با هفت اصل مصوب:
+۱. سادگی؛ ۲. جداسازی مسئولیت‌ها؛ ۳. قابلیت ردیابی نیازمندی‌ها؛
+۴. آزمون متناسب با ریسک؛ ۵. امنیت و حریم خصوصی؛
+۶. مدیریت خطا و قابلیت عیب‌یابی؛ ۷. سازگاری تغییرات.
+بخش‌های تکمیل‌شده: اصول بنیادین، محدودیت‌های فنی، فرایند توسعه و معیارهای کیفیت،
+حاکمیت و اصلاح قانون‌نامه، نسخه و تاریخ‌های تصویب و اصلاح.
+بخش‌های حذف‌شده: هیچ‌کدام؛ توضیحات نمونه و جای‌نگهدارهای قالب حذف شدند.
+موارد معوق: ندارد. قالب‌ها و فرمان‌های وابسته تغییر نکردند.
+این گزارش موقت است و باید پیش از ثبت نهایی قانون‌نامه در گیت حذف شود.
+-->
 
-## Core Principles
+# قانون‌نامه پروژه Change Flow
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+## اصول بنیادین
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### ۱. سادگی
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+ساده‌ترین راهکاری انتخاب شود که نیازمندی‌ها را برآورده می‌کند.
+افزودن وابستگی، لایه انتزاعی یا سرویس جدید باید توجیه مستند داشته باشد.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### ۲. جداسازی مسئولیت‌ها
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+منطق کسب‌وکار باید از دریافت و ارسال درخواست‌ها و ذخیره‌سازی داده جدا باشد.
+کنترلرها باید اجرای عملیات کسب‌وکار را به لایه کاربرد واگذار کنند.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### ۳. قابلیت ردیابی نیازمندی‌ها
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+هر تغییر رفتاری باید به یک نیازمندی مستند و معیارهای پذیرش روشن مرتبط باشد.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+### ۴. آزمون متناسب با ریسک
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+قواعد کسب‌وکار باید آزمون واحد داشته باشند.
+تعامل با پایگاه داده و سرویس‌های خارجی باید آزمون یکپارچگی داشته باشد.
+رفع خطاهای رفتاری باید با آزمونی همراه باشد که از بازگشت همان خطا جلوگیری کند.
 
-## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+### ۵. امنیت و حریم خصوصی
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+رمزها، کلیدها و سایر اطلاعات محرمانه نباید در مخزن کد ثبت شوند.
+ورودی‌های خارجی باید اعتبارسنجی شوند.
+اطلاعات حساس نباید در لاگ‌ها یا پاسخ‌های خطا نمایش داده شوند.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+### ۶. مدیریت خطا و قابلیت عیب‌یابی
+
+خطاها نباید بی‌صدا نادیده گرفته شوند.
+اطلاعات کافی برای عیب‌یابی باید ثبت شود، بدون افشای اطلاعات حساس.
+
+### ۷. سازگاری تغییرات
+
+تغییرات ناسازگار در قراردادهای عمومی یا داده‌های ذخیره‌شده باید مستند شوند
+و دستورالعمل مهاجرت داشته باشند.
+
+## محدودیت‌های فنی
+
+- از Java 21، Spring Boot و Gradle Wrapper استفاده شود.
+- تنظیمات وابسته به محیط خارج از کد برنامه نگهداری شوند.
+- هدف و ضرورت هر وابستگی جدید مستند شود.
+- این اصول برای کد نوشته‌شده توسط انسان و هوش مصنوعی یکسان اعمال شوند.
+
+## فرایند توسعه و معیارهای کیفیت
+
+- معیارهای پذیرش پیش از پیاده‌سازی مشخص شوند.
+- تغییرات از نظر درستی، امنیت و انطباق با این قانون‌نامه بازبینی شوند.
+- پیش از ادغام تغییرات، اجرای `./gradlew build` موفق باشد.
+- مستندات تحت تأثیر تغییر به‌روز شوند.
+- تغییر زمانی تکمیل‌شده محسوب شود که معیارهای پذیرش آن برآورده شده
+  و آزمون‌های مرتبط موفق باشند.
+
+## حاکمیت و اصلاح قانون‌نامه
+
+این قانون‌نامه بر قراردادها و رویه‌های مغایر پروژه اولویت دارد.
+
+هر اصلاح باید دلیل مستند داشته باشد، نسخه قانون‌نامه را به‌روز کند
+و مشخصات، برنامه‌ها و وظایف تحت تأثیر را مشخص کند.
+بازبینی هر تغییر باید شامل بررسی انطباق با اصول و معیارهای کیفیت این سند باشد.
+
+هر استثنا باید محدوده، دلیل و پیامدهای مستند داشته باشد.
+
+قواعد نسخه‌گذاری:
+
+- نسخه اصلی (MAJOR): حذف یا تغییر ناسازگار در تعریف یک اصل.
+- نسخه فرعی (MINOR): افزودن اصل یا گسترش اساسی الزامات.
+- نسخه اصلاحی (PATCH): شفاف‌سازی بدون تغییر تعهدات موجود.
+
+**نسخه**: 1.0.0 | **تاریخ تصویب**: 2026-11-15 | **آخرین اصلاح**: 2026-11-15
