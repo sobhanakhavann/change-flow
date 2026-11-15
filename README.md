@@ -1,4 +1,4 @@
-# change-flow
+# ChangeFlow Application
 
 An HTTP API for submitting, reviewing, and approving change requests, developed using Spec Kit and a coding agent.
 
