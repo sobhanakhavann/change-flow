@@ -1,170 +1,160 @@
-صورت تمرین: [تمرین جلسه اول](https://github.com/oroumand/SoftwareEngineeringinArtificialIntelligenceEra/blob/main/Session01/Assignments/Assignment.md)
+# Session 1 — Conceptual Answers
 
-## سؤال ۱ — Constitution و حاکمیت معماری
+Assignment: [Session 1 — Specification-Driven Software Engineering](https://github.com/oroumand/SoftwareEngineeringinArtificialIntelligenceEra/blob/eda4731/Session01/Assignments/Assignment.md)
 
-### موفقیت آزمون‌ها در برابر رعایت معماری
+## Question 1 — Constitution and Architectural Governance
 
-موفقیت آزمون‌ها یعنی رفتار بررسی‌شده در شرایط همان آزمون‌ها مطابق انتظار بوده است.
-این نتیجه به‌تنهایی محل قرارگیری منطق یا جهت وابستگی‌ها را تأیید نمی‌کند.
-برای مثال، ممنوعیت تأیید درخواست توسط ثبت‌کننده ممکن است داخل Controller نوشته شود
-و آزمون HTTP آن هم موفق باشد؛ اما اگر همان عملیات از مسیر دیگری فراخوانی شود،
-ممکن است قاعده دور زده شود. همچنین تغییر یا آزمودن منطق به جزئیات HTTP وابسته می‌شود.
+### Passing Tests vs. Architectural Compliance
 
-در Spring، Controller باید ورودی را دریافت کند، هویت معتبر را به عملیات کاربردی برساند
-و نتیجه را به پاسخ HTTP تبدیل کند. بررسی مجوز عملیات در Application و قواعدی مثل
-مجازبودن انتقال وضعیت در Domain یا Application قرار می‌گیرند؛ جزئیات ذخیره‌سازی جدا می‌مانند.
+Passing tests show that the behavior covered by those tests matched their expectations under the tested conditions. They do not automatically verify where business logic resides or whether dependencies follow the intended architecture.
 
-### محل ثبت قاعده
+For example, a controller might reject self-approval and pass its HTTP tests. However, another entry point could bypass that controller, and testing the rule would remain unnecessarily coupled to HTTP.
 
-اصل جداسازی مسئولیت‌ها باید در Constitution ثبت شود، چون قاعده‌ای پایدار و مشترک
-برای همه قابلیت‌هاست. Plan نحوه رعایت آن را در قابلیت مشخص توضیح می‌دهد؛ مثلاً مرز
-Controller و سرویس کاربردی را تعیین می‌کند. Tasks نیز کارهای اجرایی و بررسی این مرزها
-را تعریف می‌کند. بنابراین این سه سند مکمل یکدیگرند و جایگزین هم نیستند.
+In a Spring application, controllers should handle HTTP input and output and delegate use cases to the application layer. Authorization belongs in the application use case, while business invariants belong in domain or application code. Persistence details should remain separate.
 
-### جلوگیری از تکرار
+### Where the Rule Belongs
 
-- در Constitution، ممنوعیت قرارگرفتن قواعد کسب‌وکار در Controller صریح نوشته شود.
-- Plan پیش از اجرا از نظر انطباق با آن اصل بررسی شود.
-- در بازبینی کد، محل قواعد، وابستگی‌ها و امکان فراخوانی امن عملیات از مسیرهای دیگر بررسی شود.
-- قواعد اصلی مستقل از HTTP آزموده شوند و در صورت نیاز، آزمون معماری مانند ArchUnit
-  برای محدودیت‌های قابل سنجش وابستگی‌ها اضافه شود.
+The separation-of-responsibilities principle belongs in the Constitution because it is a stable rule shared across features.
 
-آزمون معماری می‌تواند وابستگی نامجاز را پیدا کند، اما تشخیص معنایی تمام منطق کسب‌وکار
-در Controller همچنان به بازبینی نیاز دارد.
+The Plan explains how a particular feature follows that principle, including component responsibilities and dependency boundaries. Tasks identify the implementation and verification work needed to preserve those boundaries.
 
-## سؤال ۲ — Specify و Clarify
+These artifacts complement one another.
 
-### اختیار Agent و تفاوت فرض با تصمیم
+### Preventing Recurrence
 
-Agent نباید مجازبودن Self-Approval را به‌عنوان تصمیم قطعی محصول نهایی کند.
-این موضوع بر امنیت و تفکیک مسئولیت‌ها اثر دارد و از متن مبهم اولیه قابل استنتاج نیست.
-Agent باید ابهام را ثبت کند و از مالک محصول تصمیم بگیرد. در صورت مسئله کامل ChangeFlow،
-این تصمیم قبلاً گرفته شده است: Self-Approval حتی برای کاربر دارای هر دو نقش ممنوع است.
+- Explicitly prohibit business rules in controllers in the Constitution.
+- Review the Plan for compliance before implementation.
+- During code review, examine rule placement, dependencies, and whether alternative entry points can safely invoke the same use case.
+- Test important business rules independently of HTTP.
+- Where useful, add architecture tests, such as ArchUnit checks, for enforceable dependency restrictions.
 
-Assumption یک برداشت موقت و قابل بازبینی است که باید همراه با دلیل و اثر آن ثبت شود.
-تصمیم تأییدشده، پاسخ مشخص مرجع مسئول محصول است که وارد نیازمندی‌ها و معیارهای پذیرش می‌شود.
-ثبت یک فرض در سند، آن را به تأیید مالک محصول تبدیل نمی‌کند.
+Architecture tests can detect forbidden dependencies, but identifying all misplaced business logic still requires human review.
 
-### ابهام‌های مهم دیگر
+## Question 2 — Specify and Clarify
 
-- آیا هر Reviewer می‌تواند همه درخواست‌ها را بررسی کند یا فقط درخواست‌های واحد خودش را؟
-- اگر نقش Reviewer پس از ورود کاربر لغو شود، آیا مجوز قبلی تا پایان نشست معتبر است؟
-- چه فیلدهایی هنگام ثبت یا ارسال اجباری‌اند و چه محدودیت‌هایی دارند؟
-- اگر دو Reviewer هم‌زمان تصمیم متفاوت بگیرند، نتیجه معتبر کدام است؟
-- آیا حذف Draft، مشاهده درخواست دیگران یا ارسال تکراری یک عملیات مجاز است؟
+### Agent Authority and Product Decisions
 
-### نقش Specify و Clarify
+The agent must not finalize self-approval as an allowed product behavior without approval from the responsible product owner. This decision affects security and separation of duties, and the original statement does not resolve it.
 
-Specify باید رفتارهای معلوم را به User Story و معیار پذیرش تبدیل کند و ابهام‌های
-اثرگذار بر امنیت، محدوده، داده و نتیجه عملیات را آشکار نگه دارد.
-Clarify این ابهام‌ها را با پرسش‌های هدفمند حل می‌کند و پاسخ‌ها را در بخش Clarifications
-و نیازمندی‌ها منعکس می‌کند. برای مثال، پاسخ مربوط به لغو نقش باید به سناریویی تبدیل شود
-که در آن کاربر پس از ازدست‌دادن مجوز نتواند درخواست را تأیید کند.
+The agent should expose the ambiguity and request a decision. In the complete ChangeFlow assignment, the decision is already explicit: self-approval is forbidden, including for users who hold both roles.
 
-تا زمانی که ابهام مهمی حل نشده، رفتار وابسته نباید به‌عنوان تصمیم قطعی پیاده‌سازی شود.
-فرض‌های کم‌ریسک نیز باید صریح، قابل بازبینی و از تصمیم‌های تأییدشده متمایز باشند.
+### Assumptions vs. Approved Decisions
 
-## سؤال ۳ — Requirement در برابر Design Decision
+An assumption is a temporary, reviewable interpretation recorded with its rationale and consequences.
 
-### تفکیک نیازمندی و تصمیم طراحی
+An approved decision is an explicit choice made by the responsible authority and reflected in the requirements and acceptance criteria. Recording an assumption does not turn it into an approved decision.
 
-اینکه فقط همان محتوایی اجرا شود که بررسی و تأیید معتبر دارد، Requirement است؛
-یعنی نتیجه‌ای که محصول باید تضمین کند. افزودن فیلد عددی `ContentRevision` یک
-Design Decision برای برآورده‌کردن آن نتیجه است و تنها راه ممکن نیست.
+### Other Important Ambiguities
 
-در راهکار مبتنی بر Revision، تأیید باید به بازبینی مشخصی از محتوا متصل شود و هنگام
-اجرا، این ارتباط دوباره بررسی شود. صرف وجود فیلد یا افزایش آن کافی نیست؛ بررسی و
-تغییر وضعیت باید اتمیک باشند تا تغییر هم‌زمان بین بررسی و اجرا رخ ندهد.
+- Can every reviewer review every request, or only requests within an assigned department?
+- If a reviewer's permission is revoked after login, can the existing session still approve requests?
+- Which fields are mandatory when creating or submitting a request?
+- What happens when two reviewers make conflicting decisions concurrently?
+- Are draft deletion, viewing other users' requests, and repeated submissions allowed?
 
-### چرا Plan و Research؟
+### The Roles of Specify and Clarify
 
-Specification باید رفتار قابل مشاهده و معیار پذیرش را بیان کند، بدون آنکه زودهنگام
-محصول را به یک مدل ذخیره‌سازی وابسته کند. Research گزینه‌ها را از نظر هزینه، صحت،
-نیاز به سابقه و پشتیبانی از هم‌زمانی مقایسه می‌کند؛ Plan تصمیم منتخب و نحوه اجرای آن
-را ثبت می‌کند. با تغییر مکانیزم، نیازمندی اصلی همچنان معتبر می‌ماند.
+Specify should describe known behavior through user stories and acceptance criteria while exposing unresolved questions that affect security, scope, data, or operation outcomes.
 
-### راهکارهای جایگزین و موازنه‌ها
+Clarify resolves those questions through focused discussion and records the answers in the specification. For example, a permission-revocation decision should produce an acceptance scenario demonstrating that a user who has lost permission cannot approve a request.
 
-| راهکار | مزیت | هزینه یا محدودیت |
+Behavior depending on an unresolved, significant ambiguity should not be finalized. Low-risk assumptions may be recorded where appropriate, but they must remain distinguishable from approved decisions.
+
+## Question 3 — Requirement vs. Design Decision
+
+### Distinguishing the Two
+
+The requirement is that execution must use content covered by valid approval. It describes the outcome the system must guarantee.
+
+Adding a numeric `ContentRevision` field is a design decision intended to satisfy that requirement. It is one possible mechanism.
+
+With a revision-based design, approval must reference a specific content revision, and execution must verify that relationship. Merely adding or incrementing the field is insufficient. The verification and relevant state change must also be atomic so that concurrent changes cannot invalidate the check before execution.
+
+### Why Plan and Research?
+
+The Specification should express expected behavior and acceptance criteria without prematurely committing the product to a storage mechanism.
+
+Research compares alternatives in terms of correctness, implementation cost, auditability, and concurrency. The Plan records the selected mechanism and how it will be implemented.
+
+This separation allows the mechanism to change while preserving the original requirement.
+
+### Alternative Approaches
+
+| Approach | Benefit | Cost or limitation |
 |---|---|---|
-| اثرانگشت محتوای تأییدشده | مقایسه محتوا بدون نگهداری نسخه کامل در رکورد تأیید | باید فیلدهای مؤثر و قالب قطعی محاسبه هش تعریف شوند؛ هش به‌تنهایی سابقه و مجوز تأیید را ثابت نمی‌کند. |
-| Snapshot تغییرناپذیر | تأیید به نسخه مشخص و قابل ممیزی متصل می‌شود؛ اجرا از همان نسخه انجام می‌شود. | فضای ذخیره‌سازی و مدیریت ارتباط نسخه‌ها بیشتر است. |
-| رکورد نسخه مستقل برای هر ویرایش | تأیید به شناسه نسخه ارجاع می‌دهد و تاریخچه قابل ردیابی است. | مدل داده و Queryها پیچیده‌تر می‌شوند. |
+| Hash of approved content | Allows content comparison without storing a complete copy in the approval record | Requires a canonical representation and a clear definition of relevant fields; the hash alone does not prove approval authority |
+| Immutable snapshot | Approval references an explicit, auditable snapshot that can be used for execution | Requires additional storage and snapshot lifecycle management |
+| Separate version record for each edit | Approval references a version identifier, preserving traceable history | Introduces a more complex data model and queries |
 
-در همه گزینه‌ها، اعتبار تأیید و اتصال آن به محتوای اجراشونده باید تضمین شود.
-همچنین قاعده قطعی ChangeFlow مبنی بر ممنوعیت ویرایش درخواست Approved باید مستقل
-از مکانیزم فنی حفظ شود. «اجرای درخواست» در این سؤال مفهومی، به‌خودی‌خود قابلیت جدیدی
-به محدوده نسخه اولیه پروژه اضافه نمی‌کند.
+Every approach must preserve the connection between valid approval and the content being executed.
 
-## سؤال ۴ — Tasks و Analyze
+ChangeFlow's explicit prohibition on editing an `Approved` request must remain enforced independently of the selected mechanism. The mention of execution in this conceptual question does not add an execution feature to the initial project scope.
 
-### مشکل وابستگی و موازی‌سازی
+## Question 4 — Tasks and Analyze
 
-کاری که به دیتابیس آماده وابسته است، نمی‌تواند پیش از آماده‌سازی Schema و Migration
-مربوط اجرا شود. ترتیب فعلی یک پیش‌نیاز برآورده‌نشده دارد. باید Migration و تنظیمات
-لازم زودتر قرار بگیرند و وابستگی Task مصرف‌کننده به آن‌ها صریح ثبت شود.
+### Dependency and Parallelism Problems
 
-نشانگر `[P]` ادعای امکان اجرای موازی است. وقتی دو Task فایل مشترک را تغییر می‌دهند،
-این ادعا بدون تفکیک روشن کار قابل اتکا نیست؛ احتمال تعارض و ناسازگاری وجود دارد.
-راه ساده، حذف موازی‌سازی و اجرای ترتیبی است. اگر واقعاً بتوان خروجی‌ها را مستقل کرد،
-باید مرز فایل‌ها و قرارداد مشترک پیش از اجرای موازی مشخص شود.
+A task that requires a prepared database cannot run before the required schema and migrations are available. The task order contains an unmet prerequisite.
 
-### Findingهای مورد انتظار
+Database preparation must appear earlier, and the consuming task must explicitly depend on it.
 
-- وابستگی ثبت‌نشده یا ترتیب نادرست: Task مصرف‌کننده پیش از Migration قرار گرفته است.
-- تعارض موازی‌سازی: دو Task دارای `[P]` روی فایل مشترک کار می‌کنند.
-- در صورت اختلاف با Plan، ناسازگاری برنامه اجرا با ترتیب آماده‌سازی Persistence.
+The `[P]` marker indicates that tasks can run in parallel. If two tasks modify the same file, that claim requires careful justification because conflicting changes or inconsistent assumptions may result.
 
-هر Finding باید محل، اثر و پیشنهاد اصلاح روشن داشته باشد. شدت مشکل وابسته به اثر آن است؛
-وابستگی‌ای که اجرای کار را متوقف می‌کند باید پیش از Implement رفع شود.
-Analyze در نسخه این تمرین فقط گزارش می‌دهد و خودش فایل‌ها را اصلاح نمی‌کند.
+The simplest correction is to execute them sequentially. If parallel execution is necessary, their responsibilities and shared contract should first be separated clearly.
 
-### چرا پوشش صددرصد کافی نیست؟
+### Expected Findings
 
-ارتباط هر Requirement با یک Task فقط نبودن نیازمندی کاملاً بدون Task را نشان می‌دهد.
-این عدد، درستی پیاده‌سازی پیشنهادی، کفایت آزمون‌ها، رعایت امنیت، حل ابهام‌ها یا
-قابل اجرا بودن ترتیب کار را ثابت نمی‌کند. آمادگی Implement به کیفیت این ارتباط‌ها
-و رفع Findingهای مهم نیز وابسته است.
+Analyze should report:
 
-## سؤال ۵ — Implement، Validation و Converge
+- A missing dependency or incorrect task order: the consuming task precedes database preparation.
+- A parallelism conflict: tasks marked `[P]` modify a shared file without a clear coordination strategy.
+- Any inconsistency between the Plan's persistence setup and the task execution order.
 
-### آیا قابلیت کامل و پذیرفته‌شده است؟
+Each finding should identify its location, impact, and recommended correction. Severity depends on the consequences; execution-blocking dependencies must be resolved before the affected implementation begins.
 
-خیر. وجود قاعده امنیتی رعایت‌نشده یعنی محصول با الزامات مستند منطبق نیست.
-معیار پذیرش انسانی ارزیابی‌نشده نیز باید «ارزیابی‌نشده» گزارش شود، نه موفق.
-تکمیل Taskها و موفقیت ۱۲۰ آزمون، فقط بخشی از شواهد است؛ ممکن است آزمونی برای
-نقص امنیتی وجود نداشته باشد یا اصلاً Task لازم از برنامه جا افتاده باشد.
+In the assignment's tool version, Analyze reports findings without directly modifying the artifacts.
 
-### تفاوت چهار مفهوم
+### Why Full Requirement Coverage Is Insufficient
 
-| مفهوم | چه چیزی را نشان می‌دهد؟ | چه چیزی را به‌تنهایی تضمین نمی‌کند؟ |
+Mapping every requirement to a task only shows that no requirement is completely unrepresented.
+
+It does not establish that the proposed implementation is correct, the tests are adequate, security requirements are satisfied, ambiguities are resolved, or the task order is executable.
+
+Implementation readiness depends on the quality of those mappings and the resolution of significant findings.
+
+## Question 5 — Implement, Validation, and Converge
+
+### Is the Feature Complete and Accepted?
+
+No. The unmet security rule means the implementation does not satisfy its requirements. The unevaluated human acceptance criterion must remain explicitly unevaluated.
+
+Completed task checkboxes and 120 passing tests provide partial evidence. A missing security test or an omitted task can leave an important requirement unfulfilled.
+
+### Build, Test, Validation, and Acceptance
+
+| Concept | What it establishes | What it does not establish by itself |
 |---|---|---|
-| Build | پروژه با ابزار و تنظیمات مشخص ساخته می‌شود. | درستی رفتار و رعایت همه نیازمندی‌ها |
-| Test | سناریوهای مشخص با انتظارهای تعریف‌شده مقایسه شده‌اند. | پوشش همه خطرها و معیارهای محصول |
-| Validation | شواهد خودکار و انسانی برای انطباق محصول با نیاز و محدودیت‌ها بررسی شده‌اند. | پذیرش نهایی توسط مرجع مسئول، اگر جداگانه لازم باشد |
-| Acceptance | مرجع مسئول بر اساس معیارها و شواهد، قابلیت را پذیرفته است. | بی‌نقص‌بودن دائمی محصول |
+| Build | The project can be compiled and packaged with the stated tools and configuration | Correct behavior or satisfaction of every requirement |
+| Test | Defined scenarios have been checked against specified expectations | Coverage of every risk or product criterion |
+| Validation | Relevant evidence has been assessed against intended behavior, needs, and constraints | Final acceptance by the responsible authority when separate approval is required |
+| Acceptance | The responsible authority accepts the feature against agreed criteria and evidence | Permanent freedom from defects |
 
-در Gradle، اجرای `build` ممکن است آزمون‌ها را نیز اجرا کند؛ اما نقش ساخت و آزمودن
-همچنان متفاوت است و گزارش باید دقیقاً فرمان، نتیجه و آزمون‌های واقعاً اجراشده را بیان کند.
+In Gradle, `build` may also execute tests. The roles of building and testing remain distinct, and reports must state the actual commands, outcomes, and tests executed.
 
-### نقش Converge و تفاوت آن با Analyze
+### Converge vs. Analyze
 
-Analyze سازگاری و کیفیت Spec، Plan و Tasks را بررسی می‌کند؛ تمرکز آن روی سندهاست.
-Converge کد فعلی را با قصد مستند در همین سندها مقایسه می‌کند تا کارهای باقی‌مانده
-یا رفتارهای پیاده‌سازی‌نشده مشخص شوند. در نسخه این تمرین، Converge کد را مستقیماً
-اصلاح نمی‌کند؛ شکاف‌ها را به Taskهای قابل ردیابی تبدیل می‌کند.
+Analyze examines the consistency and quality of the Specification, Plan, and Tasks. Its focus is on the artifacts.
 
-در این مثال، باید برای نقص امنیتی Task اصلاح و آزمون بازگشت ثبت شود و ارزیابی انسانی
-نیز به‌عنوان کار باقی‌مانده مشخص بماند. Converge نمی‌تواند به‌جای انسان، پذیرش او را اعلام کند.
+Converge compares the current implementation with the documented intent to identify missing behavior and remaining work. In the assignment's tool version, it does not directly fix the code; it turns gaps into traceable tasks.
 
-### مسیر اصلاح شکاف جدید
+For this example, the security defect requires a corrective task and regression test. Human acceptance must remain recorded as outstanding. Converge cannot claim human acceptance on behalf of participants.
 
-1. شکاف با ارجاع به نیازمندی یا معیار پذیرش و شواهد کد ثبت شود.
-2. اگر قصد محصول مبهم است، ابتدا Spec و تصمیم مربوط روشن شود؛ برای پنهان‌کردن نقص،
-   نیازمندی تضعیف نشود.
-3. Task اصلاحی با وابستگی، آزمون و معیار اتمام به `tasks.md` اضافه شود.
-4. اصلاح از مسیر Implement انجام شود و Build، آزمون‌های مرتبط و Validation دوباره اجرا شوند.
-5. انطباق مجدد بررسی و وضعیت واقعی پذیرش انسانی ثبت شود.
+### Correcting a Newly Discovered Gap
 
-طبق صورت تمرین، تکمیل همه Taskهای تازه Converge برای موعد فعلی الزامی نیست؛
-اما ثبت و تحلیل آن‌ها الزامی است. این اجازه به معنی کامل یا پذیرفته‌شده بودن قابلیت نیست.
+1. Record the gap with references to the requirement or acceptance criterion and relevant implementation evidence.
+2. If the intended behavior is ambiguous, clarify the specification first. Do not weaken the requirement merely to hide an implementation defect.
+3. Add corrective tasks to `tasks.md`, including dependencies, tests, and completion criteria.
+4. Implement the correction and rerun the relevant build, tests, and validation.
+5. Reassess compliance and record the actual human acceptance status.
+
+The assignment does not require every newly discovered Converge task to be completed before the current deadline. However, those tasks must be recorded and analyzed. This allowance does not make the feature complete or accepted.
