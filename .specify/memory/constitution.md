@@ -1,87 +1,136 @@
-<!--
-گزارش اثر همگام‌سازی (Sync Impact Report)
-تغییر نسخه: قالب بدون نسخه → 1.0.0 (تصویب اولیه)
-اصول: جایگزینی پنج جای‌نگهدار قالب با هفت اصل مصوب:
-۱. سادگی؛ ۲. جداسازی مسئولیت‌ها؛ ۳. قابلیت ردیابی نیازمندی‌ها؛
-۴. آزمون متناسب با ریسک؛ ۵. امنیت و حریم خصوصی؛
-۶. مدیریت خطا و قابلیت عیب‌یابی؛ ۷. سازگاری تغییرات.
-بخش‌های تکمیل‌شده: اصول بنیادین، محدودیت‌های فنی، فرایند توسعه و معیارهای کیفیت،
-حاکمیت و اصلاح قانون‌نامه، نسخه و تاریخ‌های تصویب و اصلاح.
-بخش‌های حذف‌شده: هیچ‌کدام؛ توضیحات نمونه و جای‌نگهدارهای قالب حذف شدند.
-موارد معوق: ندارد. قالب‌ها و فرمان‌های وابسته تغییر نکردند.
-این گزارش موقت است و باید پیش از ثبت نهایی قانون‌نامه در گیت حذف شود.
+﻿<!--
+Sync Impact Report
+Version change: 1.0.0 -> 2.0.0
+Rationale: Apply the project owner's supplied replacement. Expanded obligations cover approved
+specifications, authorization, state integrity, concurrency, evidence, and governance. This is a
+major amendment because testing obligations are also redefined: all business rules become
+important business rules, and the blanket external-service integration-test mandate is removed.
+Modified principles (previous Persian titles translated here for comparison):
+- Simplicity -> I. Simplicity and Incremental Development
+- Requirements Traceability -> II. Specification-Driven Development
+- Separation of Responsibilities -> III. Separation of Responsibilities
+- Security and Privacy -> IV. Security and Privacy
+- Risk-Based Testing -> VI. Risk-Based Testing and Verifiable Evidence
+- Error Handling and Diagnostics -> VII. Error Handling and Diagnostics
+- Change Compatibility -> VIII. Compatibility and Change Management
+Added principle: V. State Integrity and Concurrency.
+Expanded/renamed sections: Technical Constraints -> Technical Constraints and Scope;
+Development Workflow and Quality Gates; Governance.
+Removed sections: None. Existing principles are incorporated into the replacement's eight principles.
+Impact: Specifications must define failure, authorization, concurrency, and repeated-request behavior;
+plans/research must justify boundaries and database, authentication, and concurrency mechanisms;
+tasks must trace remaining gaps; code and tests must be reviewed against these obligations.
+Dependent artifacts were not modified or assessed for compliance in this constitution-only update.
+Approval: Project owner explicitly requested application of the supplied replacement in this session.
+Deferred placeholders/TODOs: None.
+This report is temporary review material; remove it before committing the amended constitution.
 -->
 
-# قانون‌نامه پروژه Change Flow
+# ChangeFlow Constitution
 
-## اصول بنیادین
+## Core Principles
 
-### ۱. سادگی
+### I. Simplicity and Incremental Development
 
-ساده‌ترین راهکاری انتخاب شود که نیازمندی‌ها را برآورده می‌کند.
-افزودن وابستگی، لایه انتزاعی یا سرویس جدید باید توجیه مستند داشته باشد.
+- Choose the simplest solution that satisfies the approved requirements.
+- Every new dependency, abstraction, module, or service MUST have a documented purpose.
+- Do not introduce infrastructure or capabilities for anticipated future needs.
+- Keep changes small enough to review and validate.
 
-### ۲. جداسازی مسئولیت‌ها
+### II. Specification-Driven Development
 
-منطق کسب‌وکار باید از دریافت و ارسال درخواست‌ها و ذخیره‌سازی داده جدا باشد.
-کنترلرها باید اجرای عملیات کسب‌وکار را به لایه کاربرد واگذار کنند.
+- Features MUST be implemented against reviewed and approved specifications.
+- Expected behavior, important failure scenarios, scope, and acceptance criteria MUST be defined before implementation.
+- Significant behavioral changes MUST first be reflected in the specification, followed by an impact review of the design, tasks, code, and tests.
+- Product assumptions MUST be explicit and distinguishable from approved decisions.
+- Unresolved questions affecting security, business behavior, or architecture MUST be raised before the dependent behavior is finalized.
 
-### ۳. قابلیت ردیابی نیازمندی‌ها
+### III. Separation of Responsibilities
 
-هر تغییر رفتاری باید به یک نیازمندی مستند و معیارهای پذیرش روشن مرتبط باشد.
+- Business rules MUST remain separate from HTTP handling and persistence details.
+- Controllers MUST delegate use cases to the application layer.
+- Domain or application code MUST enforce business invariants and valid state transitions.
+- The application layer MUST coordinate use cases and enforce their authorization requirements.
+- Persistence components MUST implement data access and storage concerns without becoming the sole enforcement point for business rules.
+- Business behavior MUST be testable without starting an HTTP server.
+- Package and dependency boundaries MUST be documented in the implementation plan. Separate build modules are not required unless justified.
 
-### ۴. آزمون متناسب با ریسک
+### IV. Security and Privacy
 
-قواعد کسب‌وکار باید آزمون واحد داشته باشند.
-تعامل با پایگاه داده و سرویس‌های خارجی باید آزمون یکپارچگی داشته باشد.
-رفع خطاهای رفتاری باید با آزمونی همراه باشد که از بازگشت همان خطا جلوگیری کند.
+- Authentication and authorization MUST be treated as separate responsibilities.
+- Sensitive operations MUST verify the caller's identity, current server-side permissions, and applicable resource access rules.
+- Client-supplied roles, ownership claims, or requested states MUST NOT independently establish authority.
+- External input MUST be validated at the appropriate boundary.
+- Secrets and credentials MUST NOT be committed to the repository or exposed in logs and error responses.
+- Rejected operations MUST NOT disclose information the caller is not authorized to access.
 
-### ۵. امنیت و حریم خصوصی
+### V. State Integrity and Concurrency
 
-رمزها، کلیدها و سایر اطلاعات محرمانه نباید در مخزن کد ثبت شوند.
-ورودی‌های خارجی باید اعتبارسنجی شوند.
-اطلاعات حساس نباید در لاگ‌ها یا پاسخ‌های خطا نمایش داده شوند.
+- State-changing operations MUST enforce their documented preconditions and transition rules.
+- Operations based on stale data MUST NOT silently overwrite newer changes.
+- Related updates that form one business operation MUST commit atomically or leave no partial persistent effects.
+- Concurrency and repeated-request behavior MUST be defined in the feature specification and technical plan.
+- The chosen mechanisms MUST be validated against the selected persistence technology.
 
-### ۶. مدیریت خطا و قابلیت عیب‌یابی
+### VI. Risk-Based Testing and Verifiable Evidence
 
-خطاها نباید بی‌صدا نادیده گرفته شوند.
-اطلاعات کافی برای عیب‌یابی باید ثبت شود، بدون افشای اطلاعات حساس.
+- Important business rules MUST have automated tests independent of HTTP handling.
+- Persistence behavior MUST have integration tests using a database capable of representing the behavior under test.
+- Tests MUST cover relevant success, failure, authorization, boundary, and concurrency scenarios.
+- Tests for rejected sensitive operations MUST verify the resulting persistent state as well as the response.
+- Behavioral bug fixes MUST include regression tests.
+- Build success and passing tests MUST NOT be presented as proof of untested requirements or human acceptance.
+- Validation reports MUST record actual commands, results, and known limitations. Unperformed checks MUST be reported as unperformed.
 
-### ۷. سازگاری تغییرات
+### VII. Error Handling and Diagnostics
 
-تغییرات ناسازگار در قراردادهای عمومی یا داده‌های ذخیره‌شده باید مستند شوند
-و دستورالعمل مهاجرت داشته باشند.
+- Failures MUST NOT be silently ignored.
+- API failures MUST provide consistent, documented responses that clients can interpret.
+- Diagnostic information MUST support troubleshooting without exposing secrets, private content, or internal implementation details to unauthorized callers.
+- Operational failures MUST NOT be reported as successful business operations.
 
-## محدودیت‌های فنی
+### VIII. Compatibility and Change Management
 
-- از Java 21، Spring Boot و Gradle Wrapper استفاده شود.
-- تنظیمات وابسته به محیط خارج از کد برنامه نگهداری شوند.
-- هدف و ضرورت هر وابستگی جدید مستند شود.
-- این اصول برای کد نوشته‌شده توسط انسان و هوش مصنوعی یکسان اعمال شوند.
+- Breaking changes to public contracts or persisted data MUST be documented.
+- Affected consumers and existing data MUST have migration instructions where applicable.
+- Documentation affected by a change MUST be updated.
+- Planned capabilities MUST be clearly distinguished from implemented and validated capabilities.
 
-## فرایند توسعه و معیارهای کیفیت
+## Technical Constraints and Scope
 
-- معیارهای پذیرش پیش از پیاده‌سازی مشخص شوند.
-- تغییرات از نظر درستی، امنیت و انطباق با این قانون‌نامه بازبینی شوند.
-- پیش از ادغام تغییرات، اجرای `./gradlew build` موفق باشد.
-- مستندات تحت تأثیر تغییر به‌روز شوند.
-- تغییر زمانی تکمیل‌شده محسوب شود که معیارهای پذیرش آن برآورده شده
-  و آزمون‌های مرتبط موفق باشند.
+- Use Java 21, Spring Boot, and the Gradle Wrapper.
+- Use Spec Kit and a coding agent to support specification-driven development.
+- Keep environment-specific settings configurable outside application source code.
+- Document the purpose of every additional dependency.
+- The initial assignment delivers an HTTP API. A frontend is not required.
+- Product features involving AI, RAG, MCP, or multi-agent execution are outside the initial assignment scope.
+- Database, authentication, and concurrency mechanisms MUST be selected and justified in the technical plan and research artifacts.
 
-## حاکمیت و اصلاح قانون‌نامه
+## Development Workflow and Quality Gates
 
-این قانون‌نامه بر قراردادها و رویه‌های مغایر پروژه اولویت دارد.
+- Apply Specify, Clarify, Plan, Tasks, Analyze, Implement, Test, Review, and Converge as appropriate to the change.
+- Resolve significant inconsistencies between the specification, plan, tasks, and this constitution before implementing the affected behavior.
+- Coding-agent output MUST be reviewed for correctness, security, scope, and compliance with the approved artifacts.
+- The project owner remains responsible for approving significant product and architectural decisions.
+- Before merging implementation changes, the Gradle Wrapper build MUST succeed with the required tests enabled.
+- Record the actual build and test commands and results.
+- Review implementation against the documented intent and record remaining gaps as traceable work.
+- A feature MUST NOT be declared accepted while required acceptance criteria remain unmet or unevaluated.
+- These requirements apply equally to human-written and AI-generated changes.
 
-هر اصلاح باید دلیل مستند داشته باشد، نسخه قانون‌نامه را به‌روز کند
-و مشخصات، برنامه‌ها و وظایف تحت تأثیر را مشخص کند.
-بازبینی هر تغییر باید شامل بررسی انطباق با اصول و معیارهای کیفیت این سند باشد.
+## Governance
 
-هر استثنا باید محدوده، دلیل و پیامدهای مستند داشته باشد.
+- This constitution governs the project's enduring engineering principles.
+- Conflicts between this constitution and feature specifications or plans MUST be explicitly resolved before the affected implementation proceeds.
+- Amendments MUST document their rationale and impact on specifications, plans, tasks, code, and tests.
+- Amendments require explicit approval from the project owner before becoming effective.
+- Exceptions MUST have an explicit scope, rationale, consequences, and approval. They MUST NOT silently waive mandatory assignment requirements.
+- Every amendment MUST update the version, amendment date, and change summary.
 
-قواعد نسخه‌گذاری:
+Versioning rules:
 
-- نسخه اصلی (MAJOR): حذف یا تغییر ناسازگار در تعریف یک اصل.
-- نسخه فرعی (MINOR): افزودن اصل یا گسترش اساسی الزامات.
-- نسخه اصلاحی (PATCH): شفاف‌سازی بدون تغییر تعهدات موجود.
+- **MAJOR:** Removal or incompatible redefinition of an existing principle.
+- **MINOR:** Addition of a principle or material expansion of existing obligations.
+- **PATCH:** Editorial corrections or clarifications without changing obligations.
 
-**نسخه**: 1.0.0 | **تاریخ تصویب**: 2026-11-15 | **آخرین اصلاح**: 2026-11-15
+**Version**: 2.0.0 | **Ratified**: 2026-11-15 | **Last Amended**: 2026-11-15
