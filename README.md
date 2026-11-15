@@ -1,14 +1,26 @@
-# ChangeFlow Application
+# ChangeFlow
 
-An HTTP API for submitting, reviewing, and approving change requests, developed using Spec Kit and a coding agent.
-
-## Technology
-
-Java 21, Spring Boot, and Gradle.
+HTTP API for creating, submitting, returning, revising and approving change requests. Java 21, Spring Boot 4.1.2, Gradle Wrapper 9.8.2 and persistent file SQLite via JDBC/Flyway. No database server or Docker is needed.
 
 ## Status
 
-Initial setup and constitution are complete. Feature specification and implementation are pending.
+The workflow and automated integration tests are implemented. Real SQLite migrations, WAL, independent-connection races, rollback, current authorization and loopback HTTP have been exercised. Human acceptance SC-005 remains **Unassessed**; see [results](specs/001-change-request-workflow/acceptance/results.md). Automated success does not establish production TLS or human acceptance.
+
+Convergence fixes T049-T052 are implemented: safe physical-connection cleanup after transaction failures, strict deferred UTF-8 decoding, full-state race/replay assertions and current-role revocation coverage. Final Java 21 build: **184 tests in 25 suites, no failures/errors/skips**. See [remediation evidence](specs/001-change-request-workflow/convergence-report.md). SQLite remains unpooled; cleanup does not restore autoCommit or return unresolved connections to a pool. Physical disk failure and production TLS remain unverified.
+
+## Run locally
+
+Use Java 21 and provision a private, writable directory on local disk. Set an absolute persistent filename; the application does not create parent directories, default accounts or an in-memory fallback.
+
+```powershell
+$env:CHANGEFLOW_DB_PATH='C:/private/changeflow/changeflow.sqlite'
+$env:CHANGEFLOW_SQLITE_BUSY_TIMEOUT_MS='5000'
+.\gradlew.bat bootRun
+```
+
+This is an operator example, not a claim that the shown path exists. First startup establishes WAL then applies V1-V3 once; subsequent startups validate migrations and preserve data. Only one application/migrator instance should own startup. Provision BCrypt-backed users and roles as described in [Quickstart](specs/001-change-request-workflow/quickstart.md). Never commit database files, sidecars or credentials.
+
+Use HTTPS for Basic Authentication outside local loopback. No cookie/session login is supported. All modifying requests require `X-ChangeFlow-Client: api`; browser cross-origin requests are denied. Forwarded headers cannot supply identity or prove TLS. See [HTTP contract](specs/001-change-request-workflow/contracts/http-api.md).
 
 ## Spec Development Flow
 
@@ -32,7 +44,9 @@ Run from the project root:
 .\gradlew.bat test
 ```
 
-These commands have not yet been verified in this project.
+Java 21 offline Wrapper build and tests have been run; exact commands, results, limitations and storage evidence are in [Quickstart](specs/001-change-request-workflow/quickstart.md). Keep the original ETag for each intended command; do not automatically refresh and retry after 412 or 503.
+
+Back up consistently using SQLite's backup facility or a quiesced application with all connections closed. Never delete WAL/SHM/journal files to resolve a lock, reset data or run Flyway clean. Restrict filesystem permissions to the service operator. A 503 may leave the whole commit outcome unknown: inspect with an authorized GET before deciding on another command.
 
 ## Documentation
 
