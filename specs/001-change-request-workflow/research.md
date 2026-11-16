@@ -1,5 +1,9 @@
 # Research: ChangeFlow Technical Decisions
 
+## Current local startup configuration — 2026-11-16
+
+The owner simplified local startup: no environment file or variables are required. The default database is `${user.dir}/changeflow.sqlite`, inside the application working directory, and logs use the console. Existing parent-directory validation still applies to an explicitly overridden path. Spring process environment variables may override the defaults; `.env` is not automatically imported. Earlier instructions requiring external storage or copying `.env` are superseded for local startup. Authentication, migrations and business rules are unchanged.
+
 Updated 2026-11-15 after Tasks generation. Owner-approved change: replace PostgreSQL with persistent file-based SQLite. Product source: [spec.md](spec.md), unchanged. This document supersedes the earlier PostgreSQL storage/Testcontainers/READ COMMITTED design. No code, dependency declaration, migration or database is changed in this documentation revision.
 
 ## Runtime and dependencies

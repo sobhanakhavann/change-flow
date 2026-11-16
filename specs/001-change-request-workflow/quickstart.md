@@ -1,5 +1,8 @@
 # Quickstart and Validation Guide
 
+## Current local startup configuration — 2026-11-16
+
+The owner simplified local startup: no environment file or variables are required. The default database is `${user.dir}/changeflow.sqlite`, inside the application working directory, and logs use the console. Existing parent-directory validation still applies to an explicitly overridden path. Spring process environment variables may override the defaults; `.env` is not automatically imported. Earlier instructions requiring external storage or copying `.env` are superseded for local startup. Authentication, migrations and business rules are unchanged.
 
 Updated 2026-11-15: workflow implementation and real file-backed SQLite validation are now available. The current checkpoint below supersedes all earlier task-limited historical observations.
 

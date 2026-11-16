@@ -40,6 +40,7 @@ out/
 .env*
 *.class
 *.log
+!/.env.example
 
 # SQLite persistent files and journal sidecars
 /var/changeflow/
