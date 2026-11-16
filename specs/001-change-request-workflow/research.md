@@ -1,4 +1,4 @@
-﻿# Research: ChangeFlow Technical Decisions
+# Research: ChangeFlow Technical Decisions
 
 Updated 2026-11-15 after Tasks generation. Owner-approved change: replace PostgreSQL with persistent file-based SQLite. Product source: [spec.md](spec.md), unchanged. This document supersedes the earlier PostgreSQL storage/Testcontainers/READ COMMITTED design. No code, dependency declaration, migration or database is changed in this documentation revision.
 
@@ -89,4 +89,3 @@ Sources demonstrate documented support/implementation compatibility; no dependen
 **UTF-8 decision (T050):** bind raw byte[] in controllers, defer strict StandardCharsets.UTF_8 decoding with CodingErrorAction.REPORT until existing service visibility/action checks, then parse JSON and apply unchanged ContentRules. The old String converter irreversibly replaced invalid bytes. Rejecting every U+FFFD would incorrectly reject valid supplied text; filter-time decoding would interfere with privacy-first error ordering; relying on permissive encoding autodetection would not enforce the selected UTF-8 contract. Real raw-byte HTTP regressions failed before correction and passed after it. Exact numeric limits, normalization/blank semantics, API routes and error precedence remain unchanged.
 
 Actual final build/test evidence is in quickstart.md and the implementation follow-up in convergence-report.md; earlier documentation-only compatibility statements above are historical, not current execution status. Real TLS/physical-media/human acceptance limits remain explicit.
-

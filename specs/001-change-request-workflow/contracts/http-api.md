@@ -1,4 +1,4 @@
-﻿# ChangeFlow HTTP API Contract v1
+# ChangeFlow HTTP API Contract v1
 
 Normative design for later implementation. Base path /api/v1; UTF-8 JSON; authentication via HTTP Basic over TLS. No cookies or sessions. Unsafe requests require X-ChangeFlow-Client: api; reject absent/wrong value with 403 CLIENT_HEADER_REQUIRED. No cross-origin access enabled. Never transmit production credentials over plain HTTP.
 
@@ -86,6 +86,3 @@ Storage clarification (SQLite, 2026-11-15): bounded lock exhaustion uses the exi
 ## Contract acceptance
 
 Verify all paths, body shapes, response codes, ETags and field boundaries through actual HTTP tests; union read filters must apply to list and detail. Compare identical missing/private 404 responses, including hidden stale/invalid-state requests. No product acceptance claimed before execution.
-
-
-

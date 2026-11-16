@@ -1,4 +1,4 @@
-﻿# Data Model and Transaction Design
+# Data Model and Transaction Design
 
 Updated 2026-11-15 for owner-approved file-based SQLite; [spec.md](spec.md) product rules unchanged. Descriptions only: no executable migrations created.
 
@@ -85,6 +85,3 @@ Real driver and shared on-disk temp file, separate connections/threads/transacti
 Eight controlled cases: both winner orders for edit/edit, Approve/RequestChanges, edit/Submit Draft, edit/Submit ChangesRequested. Both read same snapshot/version; release winner, wait for commit, then allow loser upgrade. Assert readable loser 412 versus newly hidden Reviewer loser 404 after rollback/diagnosis; no partial changes, lost content or duplicate reasons. No single connection, shared-cache :memory:, sleeps or enclosing rollback-only test wrapper.
 
 Additional tests: separate no-read-snapshot BEGIN IMMEDIATE writer-slot timeout test as specified in plan.md (independent of production DEFERRED upgrade tests); stale snapshot caused by unrelated row/role change produces 503 only if request version is unchanged AND the caller still has current read access; lost current access instead requires concealed 404, as in Plan and T034; failure after CAS before reason insert; explicit commit abort versus lost acknowledgement; read-only/unwritable storage; close/reopen file across app contexts with all content/versions/reasons retained. Assert bounded completion with generous test deadline, not exact timing/performance claims. Never use test cleanup paths that could reach the configured production file.
-
-
-

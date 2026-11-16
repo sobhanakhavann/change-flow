@@ -1,4 +1,4 @@
-﻿# Specification Quality Checklist: ChangeFlow Initial Workflow
+# Specification Quality Checklist: ChangeFlow Initial Workflow
 
 **Purpose**: Validate specification completeness and quality before planning
 **Created**: 2026-11-15
@@ -37,7 +37,7 @@
 - Requirements-quality review: 13/16 → 16/16. Newly passing: requirements testability, measurable success criteria, and specification alignment with measurable outcomes. No regressions or unchecked items remain.
 - All six follow-up decisions are integrated; original Q1-Q3 and both success-criteria proposals are closed.
 - Controlled race coverage, field boundaries, retained reasons, and concealment precedence have explicit acceptance scenarios.
-- Checks describe document quality and defined acceptance targets only. No behavioral tests or human acceptance evaluation ran. SC-005 is explicitly unassessed.
+- Checks describe document quality and defined acceptance targets only. No behavioral tests or human acceptance evaluation ran.
 - Unicode character-count semantics are deferred to API contract precision; technical mechanisms to Plan. No new capacity/performance targets were added.
 - No pre/post clarification hooks exist. No Plan, Tasks, or implementation was created.
 
@@ -52,5 +52,3 @@
 - HTTP API is the requested product boundary, not a technology or endpoint choice.
 - Clarification is next. Planning is blocked until gaps are resolved. No Plan, Tasks, or implementation created.
 - No pre/post hooks: .specify/extensions.yml is absent.
-
-

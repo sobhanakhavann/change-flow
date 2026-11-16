@@ -4,14 +4,14 @@
 **Prerequisites**: [plan.md](plan.md), [spec.md](spec.md), [research.md](research.md), [data-model.md](data-model.md), [HTTP contract](contracts/http-api.md), [quickstart.md](quickstart.md), and .specify/memory/constitution.md.
 **Created**: 2026-11-15
 **Revised**: 2026-11-15 â€” owner-approved SQLite file storage; all T001â€“T048 IDs and existing unchecked states preserved.
-**Tests**: Explicitly required by SC-001â€“004, acceptance scenarios, and constitutional testing obligations. SC-005 requires separate real-human evaluation.
+**Tests**: Required by SC-001 through SC-004, acceptance scenarios, and the constitution.
 **Organization**: Setup â†’ foundation â†’ US1 (P1) â†’ US2 (P1) â†’ US4 (P1) â†’ US3 (P2) â†’ cross-cutting validation. No implementation performed by generating this file.
 
 ## Format: [ID] [P?] [Story] Description
 
 ## Current execution status - 2026-11-15
 
-T001-T047 and T049-T052 are complete; T048 remains incomplete and SC-005 remains Unassessed. This current checkpoint supersedes the historical generation and task-limited execution notes below. Completion is based on the actual implementation and validation described in quickstart.md, not on the earlier document compatibility review.
+T001-T046 and T049-T052 are complete according to the recorded evidence. T047-T048 are withdrawn, not passed.
 
 | Tasks | Delivered evidence |
 | --- | --- |
@@ -21,11 +21,10 @@ T001-T047 and T049-T052 are complete; T048 remains incomplete and SC-005 remains
 | T031-T036 | Bounded latch support; original-tag replay tests; all eight independent-connection winner orders; actual BUSY_SNAPSHOT versus separate bounded writer-slot wait; confirmed rollback/fresh connection diagnosis; current-access 404/412/503; revocation and uncertain rollback/commit coverage. |
 | T037-T042 | Returned-owner policy and incomplete edit rules, HTTP visibility, multiple feedback cycles, greatest-version projection, current revocation and full revision/resubmission/approval journey. Shared primitives reused. |
 | T043-T044 | Real-JDBC role/state/action and privacy/error matrix, no-store and safe 500/503, header/CORS controls plus existing Basic/transport tests. Layer review consolidates role/owner policy and confirms seven approved routes, pure rules and no extra dependency/subsystem. |
-| T045-T047 | README/Quickstart operations and actual evidence updated; full build, dependencies, Git exclusions and real HTTP verified; human prompts/key frozen separately with Unassessed results template. |
+| T045-T046 | README/Quickstart, full build, dependency checks, Git exclusions, and real HTTP validation. T047 is withdrawn. |
 
 Final Java 21 `gradlew.bat --offline --no-daemon build`: **BUILD SUCCESSFUL in 42s**, 172 tests / 24 suites, zero failures, errors or skips. Runtime dependency inspections resolved Xerial 3.53.4.0 and Flyway core 12.4.0. Whitespace/Git exclusion checks passed. Full test evidence includes actual loopback Boot HTTP and repeated application startup against the same file, not production TLS or human acceptance. Physical disk exhaustion/ACL/restore/deployment tests were not represented as executed; storage fault injection is labeled explicitly. Initial fixture/test-configuration/unsupported-method defects were corrected and passing reruns recorded.
 
-No real human participants were available in this session. T047 preparation is complete; T048 must remain unchecked until two actual independent evaluations are recorded under acceptance/results.md. No global settings, operational data, commits or pushes were changed. Extension hook configuration is absent.
 
 Every checkbox is executable work, not a claim of completion. [P] identifies separate-file work that may run together once its stated phase prerequisites are complete; it does not waive preceding dependencies. Story labels retain the specification's original numbering.
 
@@ -145,26 +144,26 @@ Write tests first and observe meaningful failure before implementation; execute 
 - [X] T041 [US3] Complete latest-reason projection/read-policy integration in src/main/java/com/example/changeflow/repository/ChangeRequestRepository.java and src/main/java/com/example/changeflow/controller/ChangeRequestController.java; never disclose full history or grant Reviewer access to ChangesRequested merely because feedback exists.
 - [X] T042 [US3] Execute T037â€“T039 and the full create/return/revise/resubmit/approve journey from specs/001-change-request-workflow/quickstart.md; record actual outcomes and verify prior US1/US2/US4 tests remain passing.
 
-**Checkpoint**: All four stories have independent seeded/created-flow evidence. Human SC-005 remains separate.
+**Checkpoint**: Record actual automated validation and any unfinished assignment work.
 
 ## Phase 7: Polish & Cross-Cutting Concerns
 
-**Purpose**: Verify delivery, documentation, deployment safety and real acceptance without inventing performance targets.
+**Purpose**: Verify the assignment deliverables, documentation, and actual automated results.
 
 - [X] T043 Add complete filter-chain/error-precedence regression coverage in src/test/java/com/example/changeflow/controller/AccessAndErrorContractTests.java for every role/state on list/detail/mutations, identical missing/private body+headers even with bad payload/stale version, custom-header CSRF/CORS restrictions, Basic failures, safe 500/503, no-store and no secrets/status/version leakage.
 - [X] T044 Verify Controller â†’ domain service â†’ repository responsibilities and plain-rule independence across src/main/java/com/example/changeflow/controller/, src/main/java/com/example/changeflow/domain/ and src/main/java/com/example/changeflow/repository/; remove accidental duplicate policy/framework coupling and ensure no unsupported UI/history/delete/admin endpoints or speculative dependencies.
 - [X] T045 Update README.md and specs/001-change-request-workflow/quickstart.md with actual CHANGEFLOW_DB_PATH/busy timeout, local persistent file permissions, Git main/sidecar exclusions, safe backup/restart/lock handling, no sidecar deletion or data reset, TLS/trusted-proxy boundary, BCrypt operator provisioning/revocation, original-ETag examples and uncertain-commit recovery; no datasource server credentials or Docker requirement.
 - [X] T046 Run Java 21 Wrapper dependency inspection/full test/build, single-migrator validation and HTTP quickstart on actual SQLite file; inspect .gitignore via git check-ignore for main/-wal/-shm/-journal files without deleting tracked data, verify close/reopen persistence, record exact driver/engine/Flyway/native load/PRAGMAs and test/race/failure evidence in specs/001-change-request-workflow/quickstart.md; do not infer acceptance from build success.
-- [X] T047 Freeze role-specific human scenarios and answer key before execution in specs/001-change-request-workflow/acceptance/scenarios.md and answer-key.md, covering submission/revision/approval and all role-relevant states/denial/conflict outcomes; prepare results.md with explicit Unassessed status, participant-role slots and 100%-per-participant scoring, keeping the key separate from participant prompts.
-- [ ] T048 Coordinate evaluation by two real participants (one per role) against the built service using owner-approved revision-2 scenarios/key fixed before execution; record their actual independent answers and rubric scores in specs/001-change-request-workflow/acceptance/results.md. Requester must fully answer R1-R7 (7/7) and Reviewer V1-V6 (6/6), every required scored state/rejection/conflict element correct independently (100% each), with no compensating average. V6 assesses returned results and observable permission-revocation effects only, without requiring transaction/SQL/diagnostic implementation explanations. V7 is a supplemental facilitator demonstration outside SC-005 scoring; it cannot alter or compensate for either score. Mark SC-005 passed only after both real participants meet the rubric, otherwise failed after actual execution, or leave Unassessed if execution is unavailable; never simulate responses or check T048 complete without the real evaluation. Preserve the former two-role 7/7 rubric/history in acceptance/history/revision-1/ and the decision rationale/impact in spec.md and acceptance/scope-review.md.
+T047 — Withdrawn: additional human-evaluation preparation is outside the Session 1 submission scope.
+T048 — Withdrawn, not passed: the additional two-participant evaluation is no longer required.
 
-**Checkpoint**: Report automated evidence and human acceptance separately. External availability of participants may leave T048 outstanding even after implementation/build success.
+**Checkpoint**: Record actual automated validation and any unfinished assignment work.
 
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
 
-Setup T001â€“T003 â†’ foundation T004â€“T014 â†’ US1 T015â€“T022 â†’ US2 T023â€“T030 â†’ US4 T031â€“T036 â†’ US3 T037â€“T042 â†’ final T043â€“T048.
+Setup T001â€“T003 â†’ foundation T004â€“T014 â†’ US1 T015â€“T022 â†’ US2 T023â€“T030 â†’ US4 T031â€“T036 â†’ US3 T037â€“T042 â†’ final T043–T046 (T047–T048 withdrawn).
 
 Within foundation: T003 configuration/Git authoring only â†’ T004 â†’ T005 â†’ T006. Foundation wave A: T007/T008; wave B: T009/T010 only after wave A and stable T007 models. T012/T013 can be prepared separately after migration contracts; T011 needs T010. T014 requires T003â€“T006/T013 and is the first execution of configured WAL/migrator/schema validation. All foundation work completes before story work.
 
@@ -213,7 +212,7 @@ Complete setup/foundation and US1, then demonstrate authenticated owner creation
 
 ### Incremental Delivery
 
-Add US2 review, then P1 US4 controlled integrity evidence, then P2 US3 full revision/retention journey. Finish cross-cutting contract tests and operational documentation, run actual build/validation, freeze the human evaluation and coordinate real participants. Do not automatically deploy or claim acceptance.
+Add US2 review, then P1 US4 controlled integrity evidence, then P2 US3 full revision/retention journey. Finish cross-cutting contract tests and operational documentation, run actual build/validation, record the actual automated validation and any remaining assignment gaps. Do not automatically deploy or claim acceptance.
 
 ### Parallel Team Strategy
 
@@ -227,7 +226,6 @@ Parallelize only separate-file foundation/test-authoring opportunities above. Se
 - FR-012/014: T009â€“T012, T016â€“T017, T020â€“T021, T024, T033â€“T034 and T043.
 - FR-015: T018, T022â€“T023 and T043.
 - FR-016â€“019: T005â€“T008, T015, T023â€“T030 and T037â€“T042.
-- SC-001/002: story tests plus T043/T046; SC-005: T047/T048.
 - Exact field constraints are quoted in T004â€“T006; validation/counting/default policies are carried into T007/T008 and story tests.
 - Generated task counts: setup 3, foundation 11, US1 8, US2 8, US4 6, US3 6, final 6; total 48.
 - All tasks start unchecked. No application code, test suite, build, migration, HTTP flow or human evaluation was executed by task generation.
@@ -272,7 +270,6 @@ Actual Java 21 offline compileJava and filtered tests passed: SecurityConfigurat
 
 ## Phase 8: Convergence
 
-Assessment: 2026-11-15. See [convergence-report.md](convergence-report.md) for evidence, severity, completion criteria and delivery limits. Existing task IDs, text and completion markers above are preserved as required by the append-only convergence workflow; the earlier T001-T047 completion claim is qualified by the gaps below. T048/SC-005 remains Unassessed and is not duplicated. No implementation change was made by convergence.
 
 Execute T049 first, then T050, T051 and T052 sequentially: transaction, shared controller and shared test-support files may overlap, so no [P] markers are assigned. Preserve the approved product rules and contract. Each fix must include its regression evidence; after T052 run the complete Java 21 build/tests and update README/quickstart/current execution evidence without claiming human or production TLS acceptance.
 
@@ -282,27 +279,20 @@ Execute T049 first, then T050, T051 and T052 sequentially: transaction, shared c
 
 - [X] T051 Resolve F3: complete integrity regression evidence in src/test/java/com/example/changeflow/support/ControlledOperations.java, concurrency/RequestConcurrencyTests.java and controller/StaleCommandTests.java. Completion: retain all eight independent-connection controlled winner orders and the separate real bounded writer-slot wait; for every order assert both outcomes, immutable owner, all three content fields, state/version and complete pre-existing/new feedback rows, including review-return winners. Record callback failure -> actual rollback completion -> old-resource unbinding/connection closure -> fresh diagnostic first permission SELECT, with no writes or command reentry during diagnosis. Seed prior feedback in returned-state races so its preservation is observable. Repeat completed Submit/Approve/RequestChanges immediately and after relevant return/resubmit cycles using original tags; compare full stored request and ordered feedback snapshots before/after each rejection, including 404 after Reviewer loses visibility. This is missing assertion coverage, not evidence that the current CAS/replay policy is broken. Record actual results and qualify prior full-coverage claims per FR-011/FR-012/FR-013/FR-019, SC-002/SC-003, US4/AC1-4, plan: controlled races and diagnostic boundary regression, T031/T032/T033/T036 (partial).
 
-- [X] T052 Resolve F4: complete real-JDBC current-role revocation and boundary coverage in src/test/java/com/example/changeflow/concurrency/PermissionRevocationTests.java and controller/AccessAndErrorContractTests.java, using bounded test-only coordination and independent connections. Completion: commit Requester/Reviewer role revocations while credentials/account remain valid before each protected mutation's first permission SELECT (create, edit, submit, approve, request-changes), verify rejection and unchanged full request/reason data, and verify list/detail use current role union. Include owner losing Requester while retaining Reviewer, an already-authorized read finishing followed by next-operation denial, and revocation committed AFTER failed-operation rollback/unbinding but BEFORE the diagnostic first SELECT; the latter must yield identical concealed 404 rather than old-grant 412/503 and must not reexecute the command. Keep first-SELECT ordering explicit and use no arbitrary sleeps. After T049-T052 run the full Java 21 Wrapper build/tests and refresh actual evidence in README.md, quickstart.md and task status, retaining real TLS/physical-disk and SC-005 limits per FR-009/FR-012/FR-014, SC-004, additional acceptance scenarios 8/13/14, plan: Revocation / Diagnostic boundary regression and T010/T034/T036/T043/T046 (partial).
 ## Convergence remediation execution checkpoint - 2026-11-15
 
 T049-T052 completed after review of the pre-existing working tree and test contents. The historical convergence findings and earlier evidence above remain retained; the latest implementation/disposition is in convergence-report.md. The final Java 21 offline Wrapper build succeeded in 45s with 184 tests in 25 suites, zero failures/errors/skips, and assembled Boot/plain JARs.
 
 - T049: four real-file production-bean regressions failed before correction, including pending CAS being committed after rollback failed before SQL. SqliteTransactionManager now unbinds/closes owned physical connections without autoCommit restoration. Native commit hooks, before/after commit/rollback faults, complete unchanged rows, whole lost-acknowledgement outcome, no repeated COMMIT, no diagnostic lookup/replay and fresh subsequent physical connections pass. No pool is configured; this disposal policy is not asserted safe for logical pooled close/reset.
-- T050: two actual HTTP malformed-byte tests failed before the decoding fix. Deferred strict UTF-8 decoding now rejects malformed/truncated/overlong/surrogate/out-of-range bytes and escaped lone surrogates/NUL, preserves explicit U+FFFD/supplementary/combining text and length boundaries, and retains hidden/missing 404 and unchanged data.
 - T051: all eight races now verify complete content/owner/status/version/history, seeded earlier feedback, winning/final full snapshots and rollback/completion/unbind/physical-close/fresh-diagnostic order; immediate/old-cycle retries compare unchanged complete rows. A temporary test-double content mutation caused all eight cases to fail; it was removed. Existing production CAS/replay behavior needed no change.
 - T052: real role revocation (credentials remain valid) is tested before every sensitive operation, including Draft/returned variants, remaining-role union reads and after rollback/closure before diagnostic first SELECT. JDBC coordination and HTTP error equality both pass. A temporary old-grant test double caused the new denial test to fail semantically and was removed. Existing production permission policy needed no change; one initial negative-control Optional-type harness error is recorded separately from behavioral evidence.
 
-Only T048 remains unchecked. SC-005 stays Unassessed until two real independent participants execute the frozen scenarios and each score 100%. Production TLS/certificates/proxy behavior, physical disk exhaustion/damage, ACL enforcement and restore rehearsal are not claimed verified. Tests retain unique database files and demonstrate revocation by moving test-only role grants, without deleting data. No dependency/migration change, global setting change, clean/reset, commit or push occurred. Extension hook configuration remains absent.
-## Historical human-evaluation preparation checkpoint - 2026-11-16 (before owner scope decision)
 
-T048 remains unchecked and SC-005 remains Unassessed. Local facilitator tooling was prepared under scripts/acceptance.ps1 and test sources only: guarded fresh SQLite initialization, actual-encoder hidden interactive account provisioning, grant/revoke without record deletion, one-shot fixtures, per-run verified local HTTPS and test-only controlled HTTP observations. No public user/fault API or runtime dependency was added. Full automated build: 188 tests / 27 suites, zero failures/errors/skips. See acceptance/preparation-evidence.md for actual commands, negative TLS checks, lifecycle correction and limitations.
+## Current scope — 2026-11-16
 
-The frozen R1-R7/V1-V7 prompts and 7/7 rubric have not been reduced or replaced. acceptance/scope-review.md maps them to approved SC-005 and identifies V7 infrastructure-recovery scoring and V6 internal-detail grading for owner confirmation. This decision is required before formal scoring; preparation did not fabricate its approval. Participant commands, separate key and blank response sheet are linked from acceptance/facilitator-runbook.md. No real participant answers/scores or human pass were recorded; local TLS rehearsal does not establish remote production TLS, physical-media durability or restore readiness. No commit/push, global trust change, data reset or data deletion occurred.
+The owner removed additional participant evaluation and its tooling. T047-T048 are withdrawn rather than completed. Existing product and regression-test obligations remain. Previous build counts are historical; rerun the full build after removal of the four tooling-only tests. See scope-change.md.
 
-## Owner-approved human acceptance scope revision 2 - 2026-11-16
 
-The owner resolved the earlier pending scope question before any human execution. Requester must fully answer R1-R7 (7/7); Reviewer must fully answer V1-V6 (6/6); all scored elements must be correct independently (100% per role), without compensating average or supplemental points. V6 assesses identification of returned results and observable permission-revocation effects, not internal transaction/SQL/diagnostic details. V7 remains a supplemental facilitator demonstration outside SC-005 scoring and cannot change either result.
+### Current validation — 2026-11-16
 
-Reason: align human assessment with role-relevant observable workflow/denial/conflict outcomes and separate infrastructure-recovery demonstration from scored role competence. Effect: Reviewer denominator changes from seven to six, Requester stays seven, and both retain the 100% all-elements threshold. Specification, Plan, current scenarios/key, participant/facilitator guides, blank response sheets/results and T048 are synchronized. Exact prior acceptance documents remain in acceptance/history/revision-1/; no old result was regraded because none existed. Earlier preparation notes about a pending owner decision are historical and superseded by this entry.
-
-This was documentation review only: no application/tool/test code, runtime behavior, credentials, human answers or scores were changed. T048 stays unchecked and SC-005 remains Unassessed. Existing TLS/physical-disk/operational limits and the distinction between automated rehearsal and real human acceptance remain unchanged.
+Scope-cleanup build on 2026-11-16: `gradlew.bat --offline --no-daemon build` succeeded with Java 21; **184 tests in 25 suites, zero failures/errors/skips**. The four removed tests belonged only to the withdrawn evaluation tooling. Product regression tests remain.

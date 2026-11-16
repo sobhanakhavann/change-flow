@@ -1,8 +1,8 @@
-﻿# Feature Specification: ChangeFlow Initial Workflow
+# Feature Specification: ChangeFlow Initial Workflow
 
 **Feature Branch**: No branch created
 **Created**: 2026-11-15
-**Status**: Ready for planning - specification quality reviewed; implementation and acceptance unassessed
+**Status**: Implemented; see quickstart.md for actual automated validation evidence.
 **Input**: Initial HTTP API for change request management with Requester and Reviewer roles.
 
 ## Clarifications
@@ -25,19 +25,10 @@ The project owner supplied the following approved answers in two clarification r
 Approved follow-up decisions (2026-11-15):
 
 - Q: How is SC-003 assessed? → A: Controlled tests cover both orders of every defined competing-operation pair and check operation outcomes, final state, no silent overwrite, and no partial changes. The technical mechanism is selected in Plan.
-- Q: How is SC-005 assessed? → A: Two real participants, one per role, use scenarios and an answer key fixed before execution. Both must correctly identify all states and denial/conflict reasons relevant to their role. It remains unassessed until actually executed.
 - Q: What length limits apply? → A: Every save enforces title 200, change description 5000, reason for change 2000, and return reason 2000 characters maximum. Incomplete Draft/ChangesRequested saves remain allowed; submission and return nonblank rules remain mandatory.
 - Q: What happens to earlier return reasons? → A: Preserve all previous reasons; the owner can see the latest, and Reviewers access reasons only under current request access. Full history display is not required in version one.
 - Q: How are missing and inaccessible requests reported? → A: They have the same response, taking precedence over disclosure of state or conflict for that request.
 - Q: How are other errors reported? → A: Input, identity, permission, and conflict outcomes remain distinguishable subject to request concealment. Exact response formats and HTTP codes are deferred to the API contract.
-### Session 2026-11-16 - owner-approved human acceptance scope revision 2
-
-- Q: Which prompts count toward SC-005? → A: Requester must correctly answer every required element of R1-R7 (7/7); Reviewer must correctly answer every required element of V1-V6 (6/6). Both participants must independently achieve 100%; no compensating average is permitted.
-- Q: How is V7 used? → A: It is a supplemental facilitator demonstration of uncertain commit outcome and is not scored under SC-005. It remains available separately; it cannot increase, reduce or compensate for a participant's score.
-- Q: What does V6 assess? → A: Identification of the returned response/result and observable effects of permission revocation, including the already-authorized-operation contrast; internal transaction, SQL or diagnostic-mechanism explanations are not required.
-
-Rationale and impact: scope human assessment around approved role-relevant workflow states and observable denial/conflict outcomes, separating an infrastructure-recovery demonstration from scored role competence. The prior revision-1 worksheet required 7/7 for each role and included internal-detail wording in V6; its exact materials are preserved in acceptance/history/revision-1/. This owner-approved change removes V7 only from scoring and clarifies V6, while retaining 100% correctness for all scored elements. Product behavior, security/integrity requirements, automated tests and operational/TLS limits are unchanged. No human evaluation has occurred; SC-005 remains Unassessed.
-
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Prepare and submit (Priority: P1)
@@ -184,7 +175,6 @@ These are acceptance targets, not executed tests.
 - **SC-002**: 100% of negative cases deny self-approval, unauthorized mutation, invalid transitions, and Approved edits with zero data changes.
 - **SC-003**: Controlled tests MUST cover both orders of every competing-operation pair defined in Story 4: edit/edit, Approve/RequestChanges, and edit/Submit separately in Draft and ChangesRequested. Every case MUST verify each operation outcome, final state and content, zero silent overwrites, and zero partial changes. Accessible incompatible operations report conflict; FR-012 concealment takes precedence for inaccessible requests. The technical mechanism is chosen in Plan.
 - **SC-004**: Every case where revocation is effective before the operation authorization check grants zero successful protected operations using that permission.
-- **SC-005**: Two real participants, one representative per role, MUST perform the role-relevant submission, revision, approval, denial, and conflict scenarios using revision-2 scenarios and an answer key fixed before execution. The Requester MUST correctly answer all required elements of R1-R7 (7/7); the Reviewer MUST correctly answer all required elements of V1-V6 (6/6). Each participant MUST independently identify every scored resulting state and denial/conflict reason from returned outcomes (100% per participant); no compensating average is permitted. V6 assesses returned results and observable permission-revocation effects, without requiring internal transaction, SQL or diagnostic-mechanism explanations. V7 is a supplemental facilitator demonstration and MUST NOT affect SC-005 scoring. Record actual independent responses against the fixed answer key. **Assessment status: Unassessed; no human evaluation has been executed.**
 
 ## Assumptions
 
@@ -199,10 +189,14 @@ These are acceptance targets, not executed tests.
 
 ## Open Product Decisions
 
-All previously recorded product questions and the SC-003/SC-005 proposals are resolved by the approved Clarifications. No blocking product ambiguity remains for planning.
+All previously recorded product questions and the SC-003 proposal are resolved by the approved Clarifications. No blocking product ambiguity remains for planning.
 
 - Database, authentication, concurrency/test mechanisms are intentionally deferred to Plan. Exact HTTP codes and response formats belong in the API contract.
 - The API contract must make character-counting semantics explicit for supplementary Unicode characters and combining sequences; this lower-impact representation detail does not change the approved numeric limits.
 - No new performance or capacity targets have been introduced.
-- Specification quality review does not establish implementation correctness or human acceptance. Behavioral tests have not run; SC-005 remains unassessed until the real evaluation occurs.
+- Specification quality review does not establish implementation correctness or human acceptance. This section records the historical specification review; current execution evidence is in quickstart.md.
 - Planning is the next eligible phase; no Plan, Tasks, or implementation is created by this clarification.
+
+## Assignment scope revision — 2026-11-16
+
+The owner removed the additional two-participant evaluation criterion (formerly SC-005). It is not a mandatory Session 1 assignment deliverable. This is a scope withdrawal, not a passed evaluation. Product rules and automated integrity/security requirements remain unchanged.

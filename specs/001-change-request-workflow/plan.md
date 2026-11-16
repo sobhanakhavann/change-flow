@@ -1,4 +1,4 @@
-﻿# Implementation Plan: ChangeFlow Initial Workflow
+# Implementation Plan: ChangeFlow Initial Workflow
 
 **Branch**: 001-change-request-workflow (setup-plan reported feature context; no Git checkout independently verified)
 **Date**: 2026-11-15
@@ -88,7 +88,6 @@ Startup task ordering: T003 authors configuration/Git exclusions only; it does n
 - Revocation: controlled commit before permission SELECT causes rejection; commit after first permission SELECT allows an authorized read to finish; a mutation may fail snapshot upgrade independently (fresh diagnosis first enforces current read access: revoked/inaccessible gives concealed 404; only currently readable unchanged-version failure gives 503), while the next operation rejects revoked permission. Test read and mutation. Avoid testing this with stale in-memory authorities.
 - Stale commands: repeat each completed command, including after another return/resubmit cycle, with original If-Match. No extra mutation or feedback row.
 - Diagnostic boundary regression (T033/T034): record callback failure, actual rollback completion, resource unbinding, and diagnostic transaction start in that order. Commit a changed resource/revocation between snapshots; prove diagnosis sees it, hides newly private data, executes zero writes and does not reenter the business callback. Test unconfirmed rollback/uncertain commit skips diagnosis safely.
-- SC-005: actual two-person role evaluation using owner-approved revision-2 scenarios/key fixed before execution: Requester R1-R7 (7/7), Reviewer V1-V6 (6/6), all scored elements correct independently (100% each), no compensating average. V6 requires returned-result/observable-revocation recognition rather than internal transaction explanations; V7 is a separate supplemental facilitator demonstration with no score. Preserve revision-1 history and record actual independent responses. Unassessed until executed; no automated test substitutes for it. Scope/rationale approved by the owner on 2026-11-16 in spec.md and acceptance/scope-review.md; product behavior and automated failure coverage remain unchanged.
 
 
 Split lock tests into two distinct paths. Snapshot/DEFERRED-upgrade tests deliberately establish a read snapshot and allow a competing commit before upgrade; immediate BUSY/BUSY_SNAPSHOT is acceptable and no minimum elapsed wait is asserted. For busy-timeout validation use a separate low-level JDBC connection that has NOT established a read snapshot and explicitly attempts BEGIN IMMEDIATE while another independent connection holds the writer slot on the same WAL file. This is a storage test only, not a change to production DEFERRED transaction mode. Set a short positive busy_timeout (for example 100 ms), verify its value, and use barriers/latches plus statement-entry/completion events to keep the holder locked until the blocked attempt returns. Measure the native call with a monotonic clock; require actual bounded waiting consistent with that setting (document tolerance and a generous test deadline), not just a fast BUSY result. Immediate failure does not pass timeout validation. Release holder in finally after the contender completes; no arbitrary Thread.sleep, business retries or tag refresh. Assert BUSY and safe 503 translation/no mutations separately from the eight snapshot order cases.
@@ -102,14 +101,9 @@ Readers see snapshots and only one file-wide writer exists. Busy-handler waiting
 
 Persistent main file and -wal/-shm/-journal sidecars stay outside Git. T003 plans .gitignore exclusions before test/production files can be created; this documentation revision does not edit .gitignore. Prefer a directory outside the repository; never delete sidecars to fix locks. Local filesystem and OS file permissions replace server-database credentials. Back up using a consistent SQLite backup procedure or verified offline checkpoint/close; do not copy only the main file during live WAL writes. No data import/delete is authorized here.
 
-Validation gate: native loading, exact Flyway+driver combination, PRAGMA settings, migrations, persistence across restart, eight controlled order cases and storage failure scenarios must actually pass during implementation. Existing environment evidence is historical, not a new successful runtime check. Product rules, HTTP error schema/statuses and human SC-005 requirements remain unchanged.
+Validation gate: native loading, exact Flyway+driver combination, PRAGMA settings, migrations, persistence across restart, eight controlled order cases and storage failure scenarios must actually pass during implementation. Existing environment evidence is historical, not a new successful runtime check. Product rules, HTTP error schema/statuses requirements remain unchanged.
 ## Complexity Tracking
 
 Implementation safety follow-up (T049/T050, 2026-11-15): DataSourceConfiguration supplies SqliteTransactionManager for the approved unpooled, independently owned physical connections. Spring transaction completion remains in place; cleanup unbinds/closes rather than resets autoCommit, preventing Xerial's implicit COMMIT on unresolved cleanup. Pool logical-close/reset is outside this design and must not be substituted without reviewed eviction semantics. Controllers retain raw byte[] until the service invokes deferred payload parsing after visibility/action checks; strict UTF-8 decoding reports malformed sequences before JSON/domain validation. These are corrective implementation details of existing atomicity/Unicode/privacy decisions, not new product rules. See research.md and convergence-report.md for alternatives and actual regression evidence.
 
 No constitutional violations. Flyway is justified by reproducible schema creation. No Testcontainers or external database is required; disk-file integration tests use the same JDBC engine as production. No performance goal or extra product capability introduced.
-
-
-
-
-

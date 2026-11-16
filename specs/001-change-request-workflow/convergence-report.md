@@ -1,12 +1,6 @@
 # ChangeFlow convergence assessment
 
-Human-rubric follow-up (2026-11-16): the owner approved revision 2, Requester R1-R7 (7/7) and Reviewer V1-V6 (6/6), every scored element correct independently, no averaging. V7 is supplemental/non-scored and V6 requires observable outcomes rather than internal implementation explanations. Earlier 7/7-for-both statements in the historical assessment below are superseded for future evaluation; exact revision-1 materials remain archived in acceptance/history/revision-1/. This documentation correction does not change automated evidence or record a human result: T048/SC-005 remains Unassessed.
-
-**Current implementation follow-up (2026-11-15): F1-F4 have been remediated by T049-T052. The final Java 21 build passed with 184 tests in 25 suites, zero failures/errors/skips. T048/SC-005 remains Unassessed. The original assessment below is historical and retained; the implementation evidence is appended at the end.**
-
-Date: 2026-11-15. Outcome: **tasks_appended**. Scope: feature `001-change-request-workflow` against the present code, approved specification/plan, referenced model/HTTP contract, all T001-T048 obligations and the constitution. Checkbox states were treated as claims, not proof. No Git comparison/history, application-code changes, commit, push, database migration or data deletion was performed during this assessment.
-
-Four corrective tasks, T049-T052, were appended under Phase 8. Every original byte of tasks.md was verified preserved as a prefix. Existing checked tasks were not rewritten or unchecked. The previous statement that only T048 remains is qualified by the findings below. This report is saved separately at the user's explicit request; the specification, plan, contract, implementation, README, quickstart and acceptance records remain unchanged.
+Current scope: see [scope-change.md](scope-change.md). F1–F4 were resolved by T049–T052; the original assessment below is historical and its findings must be read with the implementation follow-up.
 
 ## Method and evidence
 
@@ -26,8 +20,6 @@ Resolved dependency source JARs in the available Gradle cache were inspected dir
 | F2 | contradicts | HIGH | HTTP contract UTF-8/Unicode; FR-012/017/018; plan HTTP/security; T008/T016/T021/T043 | `controller/ChangeRequestController.java:26-28,46-50,72-75` accepts `@RequestBody String`; `controller/RequestPayloads.java:24-30` parses that already-decoded String; `domain/ContentRules.java:28-47` cannot recover malformed original bytes. | T050 |
 | F3 | partial | HIGH | FR-011/012/013/019; SC-002/003; US4; plan race/diagnostic regression; T031-T033/T036 | `concurrency/RequestConcurrencyTests.java:60-79,109-117` checks completion, different connection, state/version/title and feedback count, but not the full content/history or explicit close/unbind sequence. `support/ControlledOperations.java:7-20` only coordinates latches. `controller/StaleCommandTests.java:11-30` asserts response codes without complete stored-state/feedback comparisons; original Submit replay after a later cycle is absent. | T051 |
 | F4 | partial | HIGH | FR-009/012/014; SC-004; additional AC8/13/14; plan revocation; T010/T034/T036/T043 | `concurrency/PermissionRevocationTests.java:11-17` tests only GET after account disabling; `:25-31` disables before the failing write, not after rollback; `:39-51` covers the already-authorized read. Real current-role revocation before each mutation and between rollback and diagnostic first SELECT is not demonstrated. | T052 |
-
-Counts: missing 0, partial 2, contradicts 2, unrequested 0; CRITICAL 1, HIGH 3, MEDIUM 0, LOW 0. T048 is known unfinished external work already correctly tracked, not a duplicate new finding/task.
 
 ### F1: unresolved-transaction cleanup can commit pending work
 
@@ -73,7 +65,6 @@ T052 must use committed role changes and controlled independent connections, tes
 | T037-T042; US3; FR-019 | Shared returned edit/submit, greatest-version feedback projection, two-cycle retained reasons and current-access filtering. | No reason purge/history endpoint; current reviewer policy applies to latest reason. |
 | T043-T044; error/layer review | Access/error matrix, deferred parsing, safe advice, pure models/rules/policy and service-to-repository dependencies. | Ordinary UUID missing/private 404 precedes action/body/tag/state; no owner/status injection or forbidden endpoint found. F2/F3/F4 qualify exhaustive coverage. |
 | T045-T046; guide/build | README/Quickstart match paths, timeout, provisioning, ETag, backups, no sidecar cleanup, TLS boundary and uncertain outcomes. XML/JAR and prior build records substantiate execution. | Not an independently certified complete acceptance pass; no fresh build claimed here. |
-| T047-T048; SC-005 | Frozen role prompts, separate key, results template with no answers; T048 unchecked. | Preparation exists; evaluation correctly Unassessed. No replacement task added. |
 
 The fixed policy reads Requester-owned requests in all four states and Reviewer PendingReview/Approved; dual roles receive the union. Owner-only preparation requires current Requester, decisions require non-owner Reviewer, Approved is immutable, and server-generated ownership cannot be supplied in content. Version tags include UUID plus nonnegative long version; saves advance versions and original tags prevent old-cycle decisions. Current code and existing positive/negative tests support these areas. No extra UI, execution engine, history/delete/admin API or speculative dependency was found. The safe 405 mapping for unsupported HTTP methods is conventional transport handling, not a new business endpoint, and is not classified as unrequested work.
 
@@ -85,15 +76,10 @@ The fixed policy reads Requester-owned requests in all four states and Reviewer 
 | SC-002 | Policy/state/action/HTTP negative tests and selected unchanged-row assertions. | Partial evidence: F1/F2 and complete unchanged-state comparisons must be resolved before claiming 100%. |
 | SC-003 | All eight controlled orders passed; timeout path separate. | Partial required evidence, F3; failure safety also depends on F1. |
 | SC-004 | Fresh permission query implementation, disabling/read/failure-diagnosis cases and pure policy matrix. | Partial real-mutation/role-revocation evidence, F4. |
-| SC-005 | Frozen scenarios/key, blank results and unchecked T048. | **Unassessed**, unchanged until two real independent participants each score 100%. |
 
 This feature is **not ready for an unqualified delivery/acceptance claim**. Execute T049 first, then T050-T052, run the complete Java 21 build/tests, refresh actual evidence and run Converge again. Existing task markers are preserved for traceability; they do not override these findings. No new product decision is required by the identified remedies.
 
-Production TLS/certificate validation and trusted-proxy/backend transport have not been tested: the real HTTP suite is loopback plaintext, and mocked secure flags are only branch tests. Remote deployment with Basic credentials therefore requires environment-specific TLS verification before exposure. This is an explicit operational gate, not a fabricated successful TLS test or a reason to mark T048 complete.
-
 Physical disk exhaustion/damage, process-kill recovery, production ACL enforcement and backup/restore rehearsal remain unexecuted. Existing tests use actual read-only SQLite and injected FULL/IOERR/acknowledgement failures around real transactions; they cannot establish physical media durability. Approved requirements allow controlled fault injection, so no new physical-disk experiment task or capacity objective is invented. State these limits in handoff and validate the actual operational environment before production reliance.
-
-Finally perform T048 with two real role representatives against the corrected build and record actual independent answers/scores. Automated success and documentation review do not replace this step. No participant answers, human pass or production readiness were simulated.
 
 ## Implementation follow-up: T049-T052 - 2026-11-15
 
@@ -137,4 +123,6 @@ The first F1/F2 commands failed as documented, then passed after correction. Fil
 
 F1-F4 are resolved at the implemented/tested scope; T049-T052 are complete. SC-001/SC-002 have workflow/negative evidence, SC-003 includes every required controlled order plus complete business-state/history comparisons, and SC-004 has the required current-role/action and diagnostic-window evidence. These are automated acceptance results, not a human sign-off or a proof of physical-media durability.
 
-T048 and SC-005 remain **Unassessed**. The frozen prompts/key and results have not been replaced, and no participant answers were fabricated. Production TLS/certificate/proxy verification, physical disk exhaustion/damage, production ACL enforcement and restore rehearsal remain unexecuted. Real read-only SQLite and controlled injected storage/acknowledgement faults do not substitute for those environmental checks. The remaining feature acceptance step is the real two-participant evaluation; remote production exposure additionally needs actual TLS and operational validation. A subsequent independent Converge/review can assess the remedied code without treating this implementation follow-up as an independent audit.
+## Scope update — 2026-11-16
+
+The owner withdrew the additional human evaluation and tooling. This does not change findings F1-F4 or their remediation evidence. Historical build counts remain historical; current cleanup validation is recorded in scope-change.md.

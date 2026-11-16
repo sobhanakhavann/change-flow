@@ -1,6 +1,5 @@
 # Quickstart and Validation Guide
 
-Human-evaluation preparation (2026-11-16): use [facilitator-runbook.md](acceptance/facilitator-runbook.md), the test-only local account/TLS tool and [participant-guide.md](acceptance/participant-guide.md). Verified local HTTPS/controlled rehearsal evidence and the latest 188-test build are in [preparation-evidence.md](acceptance/preparation-evidence.md); they do not complete T048/SC-005. The original operational/test checkpoints below remain historical. The owner has approved revision 2: Requester R1-R7 (7/7), Reviewer V1-V6 (6/6), independently 100% with no averaging; V7 is a non-scored demonstration and V6 requires observable outcomes only. Revision-1 material is archived and current prompts/key are fixed before execution; no scope approval remains pending.
 
 Updated 2026-11-15: workflow implementation and real file-backed SQLite validation are now available. The current checkpoint below supersedes all earlier task-limited historical observations.
 
@@ -14,7 +13,6 @@ HTTP bodies now remain raw bytes until current resource visibility/action checks
 
 The original F1 cleanup and F2 HTTP regressions failed before correction. F3/F4 were missing coverage: expanded tests passed existing production behavior, and intentional temporary test-double mutations demonstrated failing content/old-permission assertions before being removed. They are not described as previously observed production-policy failures. Role grants are moved to isolated test-only sink identities to demonstrate revocation without deleting data. Test files remain in ignored unique build/test-databases directories; no clean or data deletion ran.
 
-T048/SC-005 remains Unassessed. Real TLS/certificates/proxy behavior, physical disk failure, production ACLs and restore rehearsal remain unverified; passing automation does not establish those outcomes. Existing run/backup/uncertain-outcome guidance remains applicable.
 
 ## Current implementation and operational guide
 
@@ -73,13 +71,12 @@ On lock timeout or storage failure, return generic 503 without SQL, paths or cre
 
 Git exclusions cover database main files and `-wal`, `-shm`, `-journal` sidecars, build output and local environment settings. Tests retain their files, close connections/contexts, and never touch configured operational storage.
 
-### Automated evidence and human acceptance
+### Automated validation evidence
 
 Actual independent-connection tests cover both winner orders for edit/edit, Approve/RequestChanges, edit/Submit from Draft and edit/Submit from ChangesRequested. They assert outcome, final version/state/content, retained reasons, one execution per command, rollback completion and a fresh connection/snapshot before diagnosis. Tests distinguish timeout waiting, snapshot failure, current-access 404, readable mismatch 412 and unchanged-readable 503. Revocation before checks, after a successful grant and before fresh diagnosis is exercised.
 
 Real read-only SQLite write rejection and fail-closed invalid/unprovisioned path checks run safely. FULL/IOERR, aborted commit, lost commit acknowledgement and rollback-acknowledgement failures are injected at repository/transaction boundaries around real SQLite transactions; these are not physical disk exhaustion, damaged storage, process-kill or filesystem ACL experiments. Atomic whole outcomes and no replay/diagnosis after uncertainty are checked.
 
-The [frozen scenarios](acceptance/scenarios.md), separate [answer key](acceptance/answer-key.md) and [results](acceptance/results.md) prepare SC-005 for two real participants. It remains Unassessed; both must independently achieve 100%. No human answers have been simulated.
 
 ## Original workflow build evidence before convergence remediation - 2026-11-15
 
@@ -97,7 +94,6 @@ Dependency inspection resolved Xerial 3.53.4.0 and Flyway core 12.4.0. The engin
 
 Layer review confirmed seven approved routes only, no UI/delete/history/admin API, and no new speculative dependency. Pure models, content/transition rules and access policy do not import Spring, JDBC, Security or HTTP. The domain service owns transaction coordination outside callbacks and calls repositories; controllers handle transport and deferred parsing. Shared role/ownership checks now live in the pure access policy, preserving the approved action/input/version/state precedence.
 
-Injected disk/acknowledgement faults are clearly distinguished above from physical environmental failures. Real TLS, deployment ACL audit, restore rehearsal and the two-person human evaluation have not been executed. No capacity/performance target or product rule was added.
 
 ## Historical task-limited checkpoints
 
@@ -184,14 +180,12 @@ The paths describe this machine/session, not committed environment defaults. Tem
 
 Configuration behavior: CHANGEFLOW_DB_PATH is required and must identify an absolute local filename in an existing writable directory. Operators provision that directory privately, outside the checkout, with service/operator-only OS ACLs; existing directory permissions are never changed by setup. The bean validates access and rejects obvious UNC/URI/in-memory paths; deployments must not put it on mapped network storage. The configured startup strategy establishes WAL before the single migrator, but has not been invoked. Default busy timeout is 5000 ms and positive values are required. Application users/password hashes and authentication implementation remain later tasks.
 
-T014 must actually execute and verify per-connection PRAGMAs, WAL, new/repeated migrations, schema, file durability and native integration. Do not run bootRun or application-context tests before the migration/security foundation is ready. SC-005 is still Unassessed.
 ## Historical design-stage evidence
 
 - Read existing build.gradle: Java 21 toolchain, Boot 4.1.2, dependency-management 1.1.7; existing Wrapper is Gradle 9.8.2.
 - Historical planning observation: java -version reported 25.0.4; gradlew.bat --version failed before Gradle startup creating C:\.gradle wrapper lock parent.
 - This revision reviewed official Boot BOM, pinned Xerial/Flyway sources and SQLite locking documentation; see research.md. Documented compatibility is not an executed integration pass.
 - No dependency resolution, native driver load, SQLite file creation, Flyway migration, application startup, test/build, or human evaluation ran in this revision.
-- SC-005 remains Unassessed. Existing PostgreSQL deployment instructions are superseded.
 
 ## Prerequisites and future setup
 
@@ -249,7 +243,6 @@ Use [HTTP contract](contracts/http-api.md), [model](data-model.md) and [plan](pl
 8. Separate timeout validation from DEFERRED/snapshot upgrade failures: use the no-read-snapshot BEGIN IMMEDIATE storage-only scenario described in plan.md. A holder connection retains the writer slot until the contender finishes. Verify short positive busy_timeout, coordinate via barriers/statement events, measure actual bounded wait with monotonic clock and documented tolerance/deadline, and reject immediate failure as timeout evidence. No arbitrary sleeps or command replay. Snapshot errors have no minimum-wait assertion; unrelated-row snapshot invalidation with unchanged request version yields 503 only if fresh current access still permits the diagnostic read; otherwise concealed 404.
 9. Revoke before first operation SELECT (reject) and after granted snapshot (old read may finish; mutation can independently fail snapshot upgrade). A failed operation diagnostic must independently reread current roles/access and conceal newly private resources; the next operation must observe revocation. Test no role cache, no earlier resource SELECT and no long-lived reused snapshot.
 10. Force failure between CAS and reason insert and explicit aborted commit to prove rollback. Separately simulate lost commit acknowledgement as uncertain whole outcome; test safe read-only inspection, never automatic command replay. Exercise read-only/unwritable path, I/O/disk-full classification with controlled fixture fault injection rather than filling or modifying production disks.
-11. SC-005: freeze scenarios/key first; two real people, one per role, each identify all role-relevant states and denial/conflict reasons correctly (100%). Record actual answers. Automated tests do not satisfy this criterion.
 
 Temp database fixtures are unique per test case, same file for each race's connections. No :memory:/shared-cache substitute or rollback-only enclosing test transaction. Close fixture handles before cleanup, and verify cleanup stays within that test's temporary directory; never delete the configured persistent production file.
 
@@ -265,3 +258,12 @@ Report runtime/migration/test/build evidence separately from design review and h
 
 
 
+
+## Scope cleanup — 2026-11-16
+
+The additional human-evaluation package and its four tooling-only tests have been removed. Earlier counts in this file describe prior runs, not a fresh build of the simplified source. See scope-change.md for the current validation result. Normal application provisioning and HTTPS requirements above remain applicable.
+
+
+### Current scope-cleanup validation — 2026-11-16
+
+Scope-cleanup build on 2026-11-16: `gradlew.bat --offline --no-daemon build` succeeded with Java 21; **184 tests in 25 suites, zero failures/errors/skips**. The four removed tests belonged only to the withdrawn evaluation tooling. Product regression tests remain.
