@@ -1,5 +1,7 @@
 # ChangeFlow convergence assessment
 
+Human-rubric follow-up (2026-11-16): the owner approved revision 2, Requester R1-R7 (7/7) and Reviewer V1-V6 (6/6), every scored element correct independently, no averaging. V7 is supplemental/non-scored and V6 requires observable outcomes rather than internal implementation explanations. Earlier 7/7-for-both statements in the historical assessment below are superseded for future evaluation; exact revision-1 materials remain archived in acceptance/history/revision-1/. This documentation correction does not change automated evidence or record a human result: T048/SC-005 remains Unassessed.
+
 **Current implementation follow-up (2026-11-15): F1-F4 have been remediated by T049-T052. The final Java 21 build passed with 184 tests in 25 suites, zero failures/errors/skips. T048/SC-005 remains Unassessed. The original assessment below is historical and retained; the implementation evidence is appended at the end.**
 
 Date: 2026-11-15. Outcome: **tasks_appended**. Scope: feature `001-change-request-workflow` against the present code, approved specification/plan, referenced model/HTTP contract, all T001-T048 obligations and the constitution. Checkbox states were treated as claims, not proof. No Git comparison/history, application-code changes, commit, push, database migration or data deletion was performed during this assessment.

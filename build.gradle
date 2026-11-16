@@ -28,9 +28,22 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+// Facilitator tooling is test-only: never included in bootJar or normal startup.
+tasks.register('prepareAcceptanceTool') {
+    dependsOn tasks.named('testClasses')
+    inputs.files(sourceSets.test.runtimeClasspath)
+    outputs.file(layout.buildDirectory.file('acceptance/launcher.args'))
+    doLast {
+        def target = layout.buildDirectory.file('acceptance/launcher.args').get().asFile
+        target.parentFile.mkdirs()
+        def cp = sourceSets.test.runtimeClasspath.asPath.replace('\\', '\\\\').replace('"', '\\"')
+        target.setText('--class-path\n"' + cp + '"\ncom.example.changeflow.controller.AcceptanceTool\n', 'UTF-8')
+    }
 }

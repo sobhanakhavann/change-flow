@@ -1,5 +1,7 @@
 # ChangeFlow
 
+For a local human-evaluation setup, see the [facilitator runbook](specs/001-change-request-workflow/acceptance/facilitator-runbook.md) and separate [participant HTTP guide](specs/001-change-request-workflow/acceptance/participant-guide.md). Test-only account/TLS tooling and automated rehearsal are available; human SC-005 remains Unassessed. The [owner-approved scope](specs/001-change-request-workflow/acceptance/scope-review.md) requires Requester 7/7 and Reviewer 6/6, each independently 100% without averaging; V7 is non-scored and V6 assesses observable outcomes only.
+
 HTTP API for creating, submitting, returning, revising and approving change requests. Java 21, Spring Boot 4.1.2, Gradle Wrapper 9.8.2 and persistent file SQLite via JDBC/Flyway. No database server or Docker is needed.
 
 ## Status

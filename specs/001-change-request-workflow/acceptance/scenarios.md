@@ -1,6 +1,8 @@
 # Frozen human evaluation scenarios
 
-Frozen: 2026-11-15, revision 1. Do not change prompts or answer key during an evaluation. Use a private evaluation database and two real participants: one Requester representative and one Reviewer representative. Neither participant sees the answer key before submitting independent answers. The facilitator records the actual HTTP responses; participants name the resulting state and explain each rejection/conflict. Never use production credentials or data.
+Execution companion: [participant-guide.md](participant-guide.md) supplies actual contract HTTP commands; [response-sheet.md](response-sheet.md) is blank. Owner-approved revision 2 is recorded in [scope-review.md](scope-review.md). No automatic test or preparation is a human result.
+
+Frozen before execution: 2026-11-16, revision 2, following the explicit owner decision. Revision 1 (2026-11-15) is preserved in history/revision-1/; no evaluation occurred under it. Do not change prompts/key during an evaluation. Use a private evaluation database and two real participants: one Requester representative and one Reviewer representative. Neither participant sees the answer key before submitting independent answers. The facilitator records actual HTTP responses; participants name resulting states and explain scored rejection/conflict outcomes. Never use production credentials or data.
 
 ## Requester prompts
 
@@ -18,7 +20,7 @@ R6. Read your Approved proposal and try to edit it. Identify the state and rejec
 
 R7. Your Requester permission is revoked before the operation permission check. Explain why your next operation cannot proceed; contrast with an operation already authorized before revocation.
 
-## Reviewer prompts
+## Reviewer scored prompts: V1-V6
 
 V1. Identify which states appear in your review queue and which remain private.
 
@@ -30,10 +32,12 @@ V4. The owner revises and resubmits. Identify its state. Try the old decision ET
 
 V5. With both roles, try Approve and RequestChanges on your own PendingReview proposal. Explain both results.
 
-V6. Your Reviewer permission is revoked before the operation check. Explain the next decision's failure and the boundary for an already authorized operation.
+V6. Your Reviewer permission is revoked before the operation check. Identify the returned result and observable effect on your next decision. Contrast the observed result for an already-authorized operation and a later operation. No internal transaction, SQL or diagnostic-mechanism explanation is required.
 
-V7. A storage failure makes commit acknowledgement uncertain. Explain why success is not established and how to inspect the outcome without automatically replaying the command.
+## Supplemental facilitator demonstration - not scored
+
+V7. A storage failure makes commit acknowledgement uncertain. The facilitator demonstrates the actual response and later authorized inspection without automatically replaying the command. Discussion is supplemental: participation, correctness or omission cannot change or compensate for either SC-005 score.
 
 ## Execution protocol
 
-The facilitator prepares original tags, roles and seeded states before each independent scenario. Capture participant identity/role, date, service build, response/state observations, verbatim answers and rubric score. For each prompt all requested state and reason elements must be correct. Success requires both participants to score 100%; no partial-credit aggregate can compensate for a wrong answer. If unavailable, leave results Unassessed. Automated tests do not supply participant answers.
+The facilitator prepares original tags, roles and seeded states before each independent scenario. Capture participant identity/role, date, service build, material revision, response/state observations, verbatim answers and rubric score. Each scored prompt passes only when all its required state/reason elements are correct. Requester must pass R1-R7 (7/7), Reviewer must pass V1-V6 (6/6), independently 100%; no aggregate compensates for a wrong answer. V7 is recorded separately if demonstrated, without a score. If real execution is unavailable, leave results Unassessed. Automated observations never supply participant answers.

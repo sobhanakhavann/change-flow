@@ -30,6 +30,14 @@ Approved follow-up decisions (2026-11-15):
 - Q: What happens to earlier return reasons? → A: Preserve all previous reasons; the owner can see the latest, and Reviewers access reasons only under current request access. Full history display is not required in version one.
 - Q: How are missing and inaccessible requests reported? → A: They have the same response, taking precedence over disclosure of state or conflict for that request.
 - Q: How are other errors reported? → A: Input, identity, permission, and conflict outcomes remain distinguishable subject to request concealment. Exact response formats and HTTP codes are deferred to the API contract.
+### Session 2026-11-16 - owner-approved human acceptance scope revision 2
+
+- Q: Which prompts count toward SC-005? → A: Requester must correctly answer every required element of R1-R7 (7/7); Reviewer must correctly answer every required element of V1-V6 (6/6). Both participants must independently achieve 100%; no compensating average is permitted.
+- Q: How is V7 used? → A: It is a supplemental facilitator demonstration of uncertain commit outcome and is not scored under SC-005. It remains available separately; it cannot increase, reduce or compensate for a participant's score.
+- Q: What does V6 assess? → A: Identification of the returned response/result and observable effects of permission revocation, including the already-authorized-operation contrast; internal transaction, SQL or diagnostic-mechanism explanations are not required.
+
+Rationale and impact: scope human assessment around approved role-relevant workflow states and observable denial/conflict outcomes, separating an infrastructure-recovery demonstration from scored role competence. The prior revision-1 worksheet required 7/7 for each role and included internal-detail wording in V6; its exact materials are preserved in acceptance/history/revision-1/. This owner-approved change removes V7 only from scoring and clarifies V6, while retaining 100% correctness for all scored elements. Product behavior, security/integrity requirements, automated tests and operational/TLS limits are unchanged. No human evaluation has occurred; SC-005 remains Unassessed.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Prepare and submit (Priority: P1)
@@ -176,7 +184,7 @@ These are acceptance targets, not executed tests.
 - **SC-002**: 100% of negative cases deny self-approval, unauthorized mutation, invalid transitions, and Approved edits with zero data changes.
 - **SC-003**: Controlled tests MUST cover both orders of every competing-operation pair defined in Story 4: edit/edit, Approve/RequestChanges, and edit/Submit separately in Draft and ChangesRequested. Every case MUST verify each operation outcome, final state and content, zero silent overwrites, and zero partial changes. Accessible incompatible operations report conflict; FR-012 concealment takes precedence for inaccessible requests. The technical mechanism is chosen in Plan.
 - **SC-004**: Every case where revocation is effective before the operation authorization check grants zero successful protected operations using that permission.
-- **SC-005**: Two real participants, one representative per role, MUST perform the role-relevant submission, revision, approval, denial, and conflict scenarios using scenarios and an answer key fixed before execution. Success requires both participants independently to identify every resulting state and every denial/conflict reason relevant to their role correctly from returned outcomes without internal diagnostics (100% correct for each participant). Record their responses against the fixed answer key. **Assessment status: Unassessed; no human evaluation has been executed.**
+- **SC-005**: Two real participants, one representative per role, MUST perform the role-relevant submission, revision, approval, denial, and conflict scenarios using revision-2 scenarios and an answer key fixed before execution. The Requester MUST correctly answer all required elements of R1-R7 (7/7); the Reviewer MUST correctly answer all required elements of V1-V6 (6/6). Each participant MUST independently identify every scored resulting state and denial/conflict reason from returned outcomes (100% per participant); no compensating average is permitted. V6 assesses returned results and observable permission-revocation effects, without requiring internal transaction, SQL or diagnostic-mechanism explanations. V7 is a supplemental facilitator demonstration and MUST NOT affect SC-005 scoring. Record actual independent responses against the fixed answer key. **Assessment status: Unassessed; no human evaluation has been executed.**
 
 ## Assumptions
 

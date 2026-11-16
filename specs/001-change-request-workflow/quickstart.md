@@ -1,5 +1,7 @@
 # Quickstart and Validation Guide
 
+Human-evaluation preparation (2026-11-16): use [facilitator-runbook.md](acceptance/facilitator-runbook.md), the test-only local account/TLS tool and [participant-guide.md](acceptance/participant-guide.md). Verified local HTTPS/controlled rehearsal evidence and the latest 188-test build are in [preparation-evidence.md](acceptance/preparation-evidence.md); they do not complete T048/SC-005. The original operational/test checkpoints below remain historical. The owner has approved revision 2: Requester R1-R7 (7/7), Reviewer V1-V6 (6/6), independently 100% with no averaging; V7 is a non-scored demonstration and V6 requires observable outcomes only. Revision-1 material is archived and current prompts/key are fixed before execution; no scope approval remains pending.
+
 Updated 2026-11-15: workflow implementation and real file-backed SQLite validation are now available. The current checkpoint below supersedes all earlier task-limited historical observations.
 
 ## Current convergence-remediation checkpoint - 2026-11-15
